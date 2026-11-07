@@ -4,7 +4,7 @@
 //! HTTP는 OS 기본 curl을 쓴다(Rust TLS 라이브러리는 C 컴파일러가 필요해서).
 
 use crate::Model;
-use std::process::Command;
+
 use std::sync::atomic::{AtomicUsize, Ordering};
 use std::sync::Mutex;
 
@@ -16,7 +16,7 @@ const MIN_PULLS: f64 = 500_000.0;
 const WORKERS: usize = 8;
 
 fn curl(url: &str, accept: Option<&str>) -> Option<String> {
-    let mut c = Command::new("curl");
+    let mut c = crate::command("curl");
     c.args(["-sfL", "--max-time", "30"]);
     if let Some(a) = accept {
         c.args(["-H", &format!("Accept: {a}")]);

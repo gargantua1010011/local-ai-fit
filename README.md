@@ -8,6 +8,10 @@ PC 사양(RAM, GPU VRAM)을 자동으로 확인해서, 그 안에서 돌릴 수 
 
 ## 실행
 
+- 창(GUI): `target/release/local-ai-fit-gui.exe` 더블클릭. 분야 선택, RAM·VRAM 값 바꿔보기, 돌릴 수 없는 모델 보기, "최신 목록 받기"(= `--update`)를 버튼으로 한다.
+- 구조: 판정 로직 `src/lib.rs`, CLI `src/main.rs`, GUI `src/bin/local-ai-fit-gui.rs`(eframe/egui). 두 exe가 같은 폴더의 `models.json`을 같이 쓴다.
+- 빌드엔 MinGW-w64가 필요(eframe 의존성이 dlltool·as를 씀). 설치·문제 해결은 `quality_control/rust.md`.
+
 ```bash
 ~/.cargo/bin/cargo build --release
 ./target/release/local-ai-fit.exe            # 내 PC 기준
