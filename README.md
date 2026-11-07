@@ -6,6 +6,18 @@ PC 사양(RAM, GPU VRAM)을 자동으로 확인해서, 그 안에서 돌릴 수 
 - 모델 데이터: [models.json](models.json) — 빌드 때 실행 파일에 포함됨(내장 목록)
 - `--update`로 받은 최신 목록은 exe 옆 `models.json`에 저장되고, 있으면 내장 목록 대신 쓴다. 지우면 내장 목록으로 돌아감.
 
+## 설치 (일반 프로그램처럼 쓰기)
+
+```bash
+~/.cargo/bin/cargo build --release
+powershell -ExecutionPolicy Bypass -File install/install.ps1   # -NoDesktop: 바탕화면 바로가기 생략
+```
+
+- `%LOCALAPPDATA%\Programs\local-ai-fit`에 exe 2개 + `uninstall.ps1` 복사(관리자 권한 불필요). `target/release/models.json`(업데이트된 목록)이 있으면 같이 복사.
+- 시작 메뉴·바탕화면 바로가기 "Local AI Fit", 사용자 PATH 추가(새 터미널에서 `local-ai-fit`), 설정 > 앱 > 설치된 앱 등록(제거 버튼 = uninstall.ps1).
+- 새 버전 설치: 다시 빌드 후 install.ps1 재실행(실행 중인 창은 자동으로 닫음, 설치 폴더의 models.json은 유지).
+- 아이콘: `assets/make_icon.py`로 생성 → `build.rs`(embed-resource)가 exe에, GUI가 `icon.rgba`를 창 아이콘으로 넣음.
+
 ## 실행
 
 - 창(GUI): `target/release/local-ai-fit-gui.exe` 더블클릭. 분야 선택, RAM·VRAM 값 바꿔보기, 돌릴 수 없는 모델 보기, "최신 목록 받기"(= `--update`)를 버튼으로 한다.

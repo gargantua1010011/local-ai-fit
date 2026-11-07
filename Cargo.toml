@@ -13,3 +13,6 @@ sysinfo = { version = "0.33", default-features = false, features = ["system"] }
 [profile.release]
 opt-level = "s"
 strip = true
+
+[build-dependencies]
+embed-resource = "3.0.12"

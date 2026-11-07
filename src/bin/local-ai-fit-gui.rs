@@ -206,7 +206,11 @@ impl eframe::App for App {
 
 fn main() -> eframe::Result {
     let options = eframe::NativeOptions {
-        viewport: egui::ViewportBuilder::default().with_inner_size([1150.0, 760.0]).with_title("local-ai-fit"),
+        viewport: egui::ViewportBuilder::default()
+            .with_inner_size([1150.0, 760.0])
+            .with_title("local-ai-fit")
+            // 창·작업표시줄 아이콘(assets/make_icon.py가 만든 64x64 RGBA)
+            .with_icon(egui::IconData { rgba: include_bytes!("../../assets/icon.rgba").to_vec(), width: 64, height: 64 }),
         ..Default::default()
     };
     eframe::run_native("local-ai-fit", options, Box::new(|cc| Ok(Box::new(App::new(cc)))))
