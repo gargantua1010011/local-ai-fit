@@ -10,7 +10,7 @@ $dest = Join-Path $env:LOCALAPPDATA 'Programs\local-ai-fit'
 $exes = 'local-ai-fit-gui.exe', 'local-ai-fit.exe'
 foreach ($e in $exes) {
     if (-not (Test-Path (Join-Path $src $e))) {
-        Write-Host "$e 이 없어요. 먼저 빌드해 주세요: ~/.cargo/bin/cargo build --release" -ForegroundColor Red
+        Write-Host "$e 이 없어요. 먼저 빌드해 주세요: cargo build --release" -ForegroundColor Red
         exit 1
     }
 }

@@ -1,37 +1,54 @@
 # local-ai-fit
 
-PC 사양(RAM, GPU VRAM)을 자동으로 확인해서, 그 안에서 돌릴 수 있는 로컬 AI 모델을 분야별로 보여주는 Rust 프로그램.
+내 PC 사양(RAM, GPU VRAM)을 자동으로 확인해서, 그 안에서 돌릴 수 있는 로컬 AI 모델을 분야별로 보여주는 Windows 프로그램(Rust). 창(GUI)과 명령줄(CLI) 두 가지로 쓸 수 있다.
 
-- 모델 목록·필요 사양 표: [MODELS.md](MODELS.md) (`models.json`에서 생성)
-- 모델 데이터: [models.json](models.json) — 빌드 때 실행 파일에 포함됨(내장 목록)
-- `--update`로 받은 최신 목록은 exe 옆 `models.json`에 저장되고, 있으면 내장 목록 대신 쓴다. 지우면 내장 목록으로 돌아감.
+![screenshot](assets/screenshot.png)
+
+- 분야: 대화, 추론, 코딩, 비전, 번역, 임베딩, 음성인식(whisper), 이미지생성(SD·FLUX)
+- 모델마다 GPU 전체 / GPU+CPU 분할 / CPU / 불가와 대략적인 속도 등급, 분야별 추천 모델을 보여준다.
+- RAM·VRAM 값을 바꿔 다른 PC 사양으로도 볼 수 있다.
+- "최신 목록 받기"(`--update`)로 Ollama 공식 레지스트리에서 모델 크기를 새로 받고 인기 있는 새 모델을 추가한다.
+- 모델 목록·필요 사양 표: [MODELS.md](MODELS.md), 원본 데이터: [models.json](models.json)(빌드 때 exe에 포함)
+
+## 빌드
+
+필요한 것: [Rust](https://rustup.rs)와 MinGW-w64(GUI 의존성이 `dlltool`·`as`를 씀). MSVC 툴체인을 쓰면 MinGW 없이 빌드된다.
+
+```bash
+winget install BrechtSanders.WinLibs.POSIX.UCRT   # GNU 툴체인일 때만
+cargo build --release
+```
+
+결과: `target/release/local-ai-fit-gui.exe`(창), `target/release/local-ai-fit.exe`(CLI). 둘 다 단독 실행 파일이라 다른 PC에 복사해도 동작한다.
 
 ## 설치 (일반 프로그램처럼 쓰기)
 
 ```bash
-~/.cargo/bin/cargo build --release
 powershell -ExecutionPolicy Bypass -File install/install.ps1   # -NoDesktop: 바탕화면 바로가기 생략
 ```
 
-- `%LOCALAPPDATA%\Programs\local-ai-fit`에 exe 2개 + `uninstall.ps1` 복사(관리자 권한 불필요). `target/release/models.json`(업데이트된 목록)이 있으면 같이 복사.
-- 시작 메뉴·바탕화면 바로가기 "Local AI Fit", 사용자 PATH 추가(새 터미널에서 `local-ai-fit`), 설정 > 앱 > 설치된 앱 등록(제거 버튼 = uninstall.ps1).
-- 새 버전 설치: 다시 빌드 후 install.ps1 재실행(실행 중인 창은 자동으로 닫음, 설치 폴더의 models.json은 유지).
-- 아이콘: `assets/make_icon.py`로 생성 → `build.rs`(embed-resource)가 exe에, GUI가 `icon.rgba`를 창 아이콘으로 넣음.
+- `%LOCALAPPDATA%\Programs\local-ai-fit`에 exe 2개 + `uninstall.ps1` 복사(관리자 권한 불필요).
+- 시작 메뉴·바탕화면 바로가기 "Local AI Fit", 사용자 PATH 추가(새 터미널에서 `local-ai-fit`), 설정 > 앱 > 설치된 앱 등록(거기서 제거).
+- 새 버전: 다시 빌드 후 install.ps1 재실행(실행 중인 창은 자동으로 닫고, 설치 폴더의 models.json은 유지).
 
-## 실행
-
-- 창(GUI): `target/release/local-ai-fit-gui.exe` 더블클릭. 분야 선택, RAM·VRAM 값 바꿔보기, 돌릴 수 없는 모델 보기, "최신 목록 받기"(= `--update`)를 버튼으로 한다.
-- 구조: 판정 로직 `src/lib.rs`, CLI `src/main.rs`, GUI `src/bin/local-ai-fit-gui.rs`(eframe/egui). 두 exe가 같은 폴더의 `models.json`을 같이 쓴다.
-- 빌드엔 MinGW-w64가 필요(eframe 의존성이 dlltool·as를 씀). 설치·문제 해결은 `quality_control/rust.md`.
+## CLI
 
 ```bash
-~/.cargo/bin/cargo build --release
-./target/release/local-ai-fit.exe            # 내 PC 기준
-./target/release/local-ai-fit.exe --all      # 못 돌리는 모델도 표시
-./target/release/local-ai-fit.exe --ram 32 --vram 8   # 다른 사양 가정 (--vram 0 = GPU 없음)
-./target/release/local-ai-fit.exe --markdown > MODELS.md
-./target/release/local-ai-fit.exe --update   # Ollama에서 최신 목록 받기(약 15초)
+local-ai-fit            # 내 PC 기준
+local-ai-fit --all      # 못 돌리는 모델도 표시
+local-ai-fit --ram 32 --vram 8   # 다른 사양 가정 (--vram 0 = GPU 없음)
+local-ai-fit --markdown > MODELS.md
+local-ai-fit --update   # Ollama에서 최신 목록 받기(약 15초)
 ```
+
+`--update`로 받은 목록은 exe 옆 `models.json`에 저장되고, 있으면 내장 목록 대신 쓴다. 지우면 내장 목록으로 돌아간다.
+
+## 구조
+
+- `src/lib.rs`: 사양 감지·판정(CLI·GUI 공용), `src/update.rs`: `--update`
+- `src/main.rs`: CLI, `src/bin/local-ai-fit-gui.rs`: GUI(eframe/egui, 한글은 시스템 글꼴 맑은 고딕 사용)
+- `assets/make_icon.py`: 아이콘 생성 → `build.rs`(embed-resource)가 exe에 넣음
+- `install/`: 설치·제거 스크립트
 
 ## --update 동작 (src/update.rs)
 
@@ -41,10 +58,10 @@ powershell -ExecutionPolicy Bypass -File install/install.ps1   # -NoDesktop: 바
 4. 본체 digest가 같은 별칭 태그(예: `llama4:16x17b` = `llama4:scout`)와 클라우드 전용 모델(매니페스트 없음)은 건너뛴다.
 5. 연결이 전혀 안 되면 저장하지 않고 종료 코드 1.
 
-HTTP는 OS 기본 `curl`을 호출한다(Windows 10+ 기본 포함). Rust TLS crate는 C 컴파일러가 필요한데 이 PC의 GNU 툴체인엔 없어서.
+HTTP는 OS 기본 `curl`을 호출한다(Windows 10+ 기본 포함). Rust TLS crate(ring, OpenSSL)를 빌드할 C 컴파일러 없이도 되게 하려고.
 레지스트리 크기는 모든 레이어 합이라 ollama.com 표시 범위의 위쪽 값과 같다(예: gemma4:26b 16→18.7GB). 안전한 쪽으로 계산된다.
 
-exe 하나로 동작(models.json 따로 필요 없음). 탐색기에서 더블클릭하면 결과를 보여주고 Enter를 기다린다.
+CLI를 탐색기에서 더블클릭하면 결과를 보여주고 Enter를 기다린다.
 
 ## 판정 방식
 
@@ -70,3 +87,11 @@ VRAM 2GB 미만(내장 그래픽)은 GPU 없음으로 본다. GPU가 여러 개�
 
 Ollama 모델은 `--update`가 알아서 추가한다. 손으로 넣을 때(Ollama 밖 모델, 분류·메모 다듬기)는 `models.json`에 한 줄 추가 후 다시 빌드. 자동 추가 항목을 다듬어 내장 목록에 반영하려면 exe 옆 파일에서 해당 줄을 옮겨오면 된다. 필드: `tag`, `cat`(대화/추론/코딩/비전/번역/임베딩/음성인식/이미지생성), `size`(GB), `params`·`active`(B, MoE만 active), `overhead`(GB, 선택), `runtime`(기본 Ollama), `gpu_only`, `note`.
 크기는 `https://ollama.com/library/<이름>/tags`에서 확인. 데이터 기준일 2026-11-07.
+
+## 비슷한 도구
+
+- [llmfit](https://github.com/AlexsJones/llmfit): Rust TUI. 모델 수가 훨씬 많고 GPU 메모리 대역폭으로 속도(tok/s)를 추정한다. LLM 전용.
+- [LLM Checker](https://github.com/Pavelevich/llm-checker): Node.js CLI, Ollama 명령까지 추천.
+- 웹 계산기: [Can You Run This LLM?](https://apxml.com/tools/vram-calculator), [Hugging Face "Can I run it?"](https://huggingface.co/spaces/Vokturz/can-it-run-llm) 등. 사양을 직접 입력해야 한다.
+
+이 프로젝트는 한국어 화면, 설치형 Windows 창 프로그램, LLM 밖의 음성인식·이미지 생성 모델까지 함께 판정하는 쪽에 초점을 둔다.
