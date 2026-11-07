@@ -95,3 +95,7 @@ Ollama 모델은 `--update`가 알아서 추가한다. 손으로 넣을 때(Olla
 - 웹 계산기: [Can You Run This LLM?](https://apxml.com/tools/vram-calculator), [Hugging Face "Can I run it?"](https://huggingface.co/spaces/Vokturz/can-it-run-llm) 등. 사양을 직접 입력해야 한다.
 
 이 프로젝트는 한국어 화면, 설치형 Windows 창 프로그램, LLM 밖의 음성인식·이미지 생성 모델까지 함께 판정하는 쪽에 초점을 둔다.
+
+## 라이선스
+
+MIT. [LICENSE](LICENSE) 참고.

@@ -2,6 +2,7 @@
 name = "local-ai-fit"
 version = "0.1.0"
 edition = "2021"
+license = "MIT"
 description = "PC 사양을 확인해 돌릴 수 있는 로컬 AI 모델을 보여준다"
 
 [dependencies]
