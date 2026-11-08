@@ -275,3 +275,36 @@ pub fn save_models(models: &[Model], path: &std::path::Path) -> std::io::Result<
     let lines: Vec<String> = models.iter().map(|m| format!("  {}", serde_json::to_string(m).unwrap())).collect();
     std::fs::write(path, format!("[\n{}\n]\n", lines.join(",\n")))
 }
+
+// ── 벤치마크 점수(비교 탭) ──────────────────────────────────────────────
+
+const BENCHMARKS_JSON: &str = include_str!("../benchmarks.json");
+
+#[derive(Deserialize)]
+pub struct Bench {
+    pub key: String,
+    pub name: String,
+    pub desc: String,
+}
+
+#[derive(Deserialize)]
+pub struct BenchModel {
+    /// Artificial Analysis에서 쓰는 모델 이름(생각 모드 여부 등이 붙어 있음)
+    pub aa_name: String,
+    pub url: String,
+    /// 벤치마크 키 → 점수(0~100). 측정되지 않은 벤치마크는 빠져 있다.
+    pub scores: std::collections::HashMap<String, f64>,
+}
+
+/// scripts/fetch_benchmarks.py가 만든 benchmarks.json(빌드 때 exe에 포함)
+#[derive(Deserialize)]
+pub struct Benchmarks {
+    pub source: String,
+    pub updated: String,
+    pub benchmarks: Vec<Bench>,
+    pub models: std::collections::HashMap<String, BenchModel>,
+}
+
+pub fn load_benchmarks() -> Benchmarks {
+    serde_json::from_str(BENCHMARKS_JSON).expect("내장 benchmarks.json 형식 오류")
+}

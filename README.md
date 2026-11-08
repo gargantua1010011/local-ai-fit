@@ -7,6 +7,7 @@
 - 분야: 대화, 추론, 코딩, 비전, 번역, 임베딩, 음성인식(whisper), 이미지생성(SD·FLUX)
 - 모델마다 GPU 전체 / GPU+CPU 분할 / CPU / 불가와 대략적인 속도 등급, 분야별 추천 모델을 보여준다.
 - RAM·VRAM 값을 바꿔 다른 PC 사양으로도 볼 수 있다.
+- "벤치마크 비교" 탭: 모델을 최대 8개 골라 MMLU-Pro, GPQA Diamond, HLE, LiveCodeBench, AIME 2025, IFBench, MMMU-Pro 점수를 표와 막대로 비교한다(아래 "벤치마크 점수" 참고).
 - "최신 목록 받기"(`--update`)로 Ollama 공식 레지스트리에서 모델 크기를 새로 받고 인기 있는 새 모델을 추가한다.
 - 모델 목록·필요 사양 표: [MODELS.md](MODELS.md), 원본 데이터: [models.json](models.json)(빌드 때 exe에 포함)
 
@@ -49,6 +50,7 @@ local-ai-fit --update   # Ollama에서 최신 목록 받기(약 15초)
 - `src/main.rs`: CLI, `src/bin/local-ai-fit-gui.rs`: GUI(eframe/egui, 한글은 시스템 글꼴 맑은 고딕 사용)
 - `assets/make_icon.py`: 아이콘 생성 → `build.rs`(embed-resource)가 exe에 넣음
 - `install/`: 설치·제거 스크립트
+- `scripts/fetch_benchmarks.py`: 벤치마크 점수 받기 → `benchmarks.json`
 
 ## --update 동작 (src/update.rs)
 
@@ -71,6 +73,16 @@ CLI를 탐색기에서 더블클릭하면 결과를 보여주고 Enter를 기다
 - 속도 등급: MoE는 활성 파라미터만 읽으므로 분할·CPU에서도 한 단계 빠르게 본다. 실측 아님.
 - 추천: 분야별로 GPU에 전부 올라가는 모델 중 가장 큰 것.
 - "Q8도 GPU에 들어감": 파라미터×1.07GB(+비전 인코더 등)로 Q8_0 크기를 추정해 VRAM에 들어가면 표시.
+
+## 벤치마크 점수
+
+- 출처: [Artificial Analysis](https://artificialanalysis.ai/models/open-source)가 직접 측정해 리더보드에 공개한 값. 모델 회사가 발표한 값이 아니라 같은 곳에서 같은 방식으로 잰 값이라 서로 비교하기 좋다.
+- 현재 리더보드엔 지원 종료된 예전 모델(qwen3, gemma3, deepseek-r1 등)이 빠져 있어서, Wayback Machine에 남은 2025-12 ~ 2026-08 페이지로 채운다. 벤치마크마다 가장 최근 값을 쓴다.
+- 원본(대부분 BF16) 모델 기준이다. Ollama 기본 양자화(Q4)로 돌리면 조금 낮을 수 있다.
+- 생각(reasoning) 모드가 기본인 모델은 reasoning 점수를 쓴다(gpt-oss는 High). Ollama 기본 태그가 어느 판인지는 레지스트리 digest로 확인했다(예: `qwen3:4b` = Qwen3 4B 2507 Thinking).
+- 모델마다 측정된 벤치마크가 달라 빈 칸이 있다. 예전 모델은 MMLU-Pro·LiveCodeBench·AIME가 있고, 최근 모델은 GPQA·HLE·IFBench 위주다.
+- 점수가 없는 모델(임베딩, 음성인식, 이미지 생성, exaone3.5 등)은 비교 탭에 나오지 않는다.
+- 갱신: `python scripts/fetch_benchmarks.py` → `benchmarks.json`(빌드 때 exe에 포함). Ollama 태그 ↔ AA 모델 연결은 스크립트의 `MAPPING`에서 고친다.
 
 ## GPU 감지
 

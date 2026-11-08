@@ -1,0 +1,694 @@
+{
+ "source": "Artificial Analysis (artificialanalysis.ai) 독립 측정값, 원본 정밀도 기준",
+ "updated": "2026-11-08",
+ "benchmarks": [
+  {
+   "key": "mmlu_pro",
+   "name": "MMLU-Pro",
+   "desc": "여러 분야 지식(객관식 10지선다)"
+  },
+  {
+   "key": "gpqa",
+   "name": "GPQA Diamond",
+   "desc": "대학원 수준 과학 문제"
+  },
+  {
+   "key": "hle",
+   "name": "HLE",
+   "desc": "전문가도 어려운 문제(Humanity's Last Exam)"
+  },
+  {
+   "key": "livecodebench",
+   "name": "LiveCodeBench",
+   "desc": "코딩 문제 풀이"
+  },
+  {
+   "key": "aime25",
+   "name": "AIME 2025",
+   "desc": "고등 수학 경시대회"
+  },
+  {
+   "key": "ifbench",
+   "name": "IFBench",
+   "desc": "지시를 정확히 따르기"
+  },
+  {
+   "key": "mmmu_pro",
+   "name": "MMMU-Pro",
+   "desc": "이미지를 보고 푸는 문제(비전 모델만)"
+  }
+ ],
+ "models": {
+  "gemma4:e2b": {
+   "aa_name": "Gemma 4 E2B (Reasoning)",
+   "url": "https://artificialanalysis.ai/models/gemma-4-e2b",
+   "scores": {
+    "gpqa": 43.3,
+    "hle": 4.8,
+    "ifbench": 38.0,
+    "mmmu_pro": 44.6
+   }
+  },
+  "gemma4:e4b": {
+   "aa_name": "Gemma 4 E4B (Reasoning)",
+   "url": "https://artificialanalysis.ai/models/gemma-4-e4b",
+   "scores": {
+    "gpqa": 57.6,
+    "hle": 3.8,
+    "ifbench": 44.2,
+    "mmmu_pro": 51.4
+   }
+  },
+  "gemma4:12b": {
+   "aa_name": "Gemma 4 12B (Reasoning)",
+   "url": "https://artificialanalysis.ai/models/gemma-4-12b",
+   "scores": {
+    "gpqa": 75.3,
+    "hle": 15.7,
+    "ifbench": 73.5,
+    "mmmu_pro": 69.7
+   }
+  },
+  "gemma4:26b": {
+   "aa_name": "Gemma 4 26B A4B (Reasoning)",
+   "url": "https://artificialanalysis.ai/models/gemma-4-26b-a4b",
+   "scores": {
+    "gpqa": 79.2,
+    "hle": 19.3,
+    "ifbench": 72.4,
+    "mmmu_pro": 69.2
+   }
+  },
+  "gemma4:31b": {
+   "aa_name": "Gemma 4 31B (Reasoning)",
+   "url": "https://artificialanalysis.ai/models/gemma-4-31b",
+   "scores": {
+    "gpqa": 85.7,
+    "hle": 23.6,
+    "ifbench": 75.6,
+    "mmmu_pro": 73.4
+   }
+  },
+  "qwen3.5:0.8b": {
+   "aa_name": "Qwen3.5 0.8B (Reasoning)",
+   "url": "https://artificialanalysis.ai/models/qwen3-5-0-8b",
+   "scores": {
+    "gpqa": 11.1,
+    "hle": 1.1,
+    "ifbench": 21.5,
+    "mmmu_pro": 25.8
+   }
+  },
+  "qwen3.5:2b": {
+   "aa_name": "Qwen3.5 2B (Reasoning)",
+   "url": "https://artificialanalysis.ai/models/qwen3-5-2b",
+   "scores": {
+    "gpqa": 45.6,
+    "hle": 2.6,
+    "ifbench": 31.5,
+    "mmmu_pro": 43.0
+   }
+  },
+  "qwen3.5:4b": {
+   "aa_name": "Qwen3.5 4B (Reasoning)",
+   "url": "https://artificialanalysis.ai/models/qwen3-5-4b",
+   "scores": {
+    "gpqa": 77.1,
+    "hle": 9.9,
+    "ifbench": 52.0,
+    "mmmu_pro": 65.4
+   }
+  },
+  "qwen3.5:9b": {
+   "aa_name": "Qwen3.5 9B (Reasoning)",
+   "url": "https://artificialanalysis.ai/models/qwen3-5-9b",
+   "scores": {
+    "gpqa": 80.6,
+    "hle": 14.9,
+    "ifbench": 66.7,
+    "mmmu_pro": 69.2
+   }
+  },
+  "qwen3.5:27b": {
+   "aa_name": "Qwen3.5 27B (Reasoning)",
+   "url": "https://artificialanalysis.ai/models/qwen3-5-27b",
+   "scores": {
+    "gpqa": 85.8,
+    "hle": 22.2,
+    "ifbench": 75.6,
+    "mmmu_pro": 75.0
+   }
+  },
+  "qwen3.5:35b": {
+   "aa_name": "Qwen3.5 35B A3B (Reasoning)",
+   "url": "https://artificialanalysis.ai/models/qwen3-5-35b-a3b",
+   "scores": {
+    "gpqa": 84.5,
+    "hle": 19.7,
+    "ifbench": 72.5,
+    "mmmu_pro": 72.7
+   }
+  },
+  "qwen3.5:122b": {
+   "aa_name": "Qwen3.5 122B A10B (Reasoning)",
+   "url": "https://artificialanalysis.ai/models/qwen3-5-122b-a10b",
+   "scores": {
+    "gpqa": 85.7,
+    "hle": 25.2,
+    "ifbench": 75.7,
+    "mmmu_pro": 75.0
+   }
+  },
+  "qwen3.8:27b": {
+   "aa_name": "Qwen3.8 27B (Medium)",
+   "url": "https://artificialanalysis.ai/models/qwen3-8-27b-medium",
+   "scores": {
+    "gpqa": 84.5,
+    "hle": 14.1,
+    "mmmu_pro": 74.2
+   }
+  },
+  "qwen3:4b": {
+   "aa_name": "Qwen3 4B 2507 (Reasoning)",
+   "url": "https://artificialanalysis.ai/models/qwen3-4b-2507-instruct-reasoning",
+   "scores": {
+    "mmlu_pro": 74.3,
+    "gpqa": 66.7,
+    "hle": 5.9,
+    "livecodebench": 64.1,
+    "aime25": 82.7,
+    "ifbench": 49.8
+   }
+  },
+  "qwen3:8b": {
+   "aa_name": "Qwen3 8B (Reasoning)",
+   "url": "https://artificialanalysis.ai/models/qwen3-8b-instruct-reasoning",
+   "scores": {
+    "mmlu_pro": 74.3,
+    "gpqa": 58.9,
+    "hle": 4.2,
+    "livecodebench": 40.6,
+    "aime25": 19.0,
+    "ifbench": 33.5
+   }
+  },
+  "qwen3:14b": {
+   "aa_name": "Qwen3 14B (Reasoning)",
+   "url": "https://artificialanalysis.ai/models/qwen3-14b-instruct-reasoning",
+   "scores": {
+    "mmlu_pro": 77.4,
+    "gpqa": 60.4,
+    "hle": 4.3,
+    "livecodebench": 52.3,
+    "aime25": 55.7,
+    "ifbench": 40.5
+   }
+  },
+  "qwen3:30b": {
+   "aa_name": "Qwen3 30B A3B 2507 (Reasoning)",
+   "url": "https://artificialanalysis.ai/models/qwen3-30b-a3b-2507-reasoning",
+   "scores": {
+    "mmlu_pro": 80.5,
+    "gpqa": 70.7,
+    "hle": 9.8,
+    "livecodebench": 70.7,
+    "aime25": 56.3,
+    "ifbench": 50.7
+   }
+  },
+  "qwen3:32b": {
+   "aa_name": "Qwen3 32B (Reasoning)",
+   "url": "https://artificialanalysis.ai/models/qwen3-32b-instruct-reasoning",
+   "scores": {
+    "mmlu_pro": 79.8,
+    "gpqa": 66.8,
+    "hle": 8.3,
+    "livecodebench": 54.6,
+    "aime25": 73.0,
+    "ifbench": 36.3
+   }
+  },
+  "qwen3:235b": {
+   "aa_name": "Qwen3 235B A22B 2507 (Reasoning)",
+   "url": "https://artificialanalysis.ai/models/qwen3-235b-a22b-instruct-2507-reasoning",
+   "scores": {
+    "mmlu_pro": 84.3,
+    "gpqa": 79.0,
+    "hle": 15.0,
+    "livecodebench": 78.8,
+    "aime25": 91.0,
+    "ifbench": 51.2
+   }
+  },
+  "gpt-oss:20b": {
+   "aa_name": "gpt-oss-20b (High)",
+   "url": "https://artificialanalysis.ai/models/gpt-oss-20b",
+   "scores": {
+    "mmlu_pro": 74.8,
+    "gpqa": 68.8,
+    "hle": 11.0,
+    "livecodebench": 77.7,
+    "aime25": 89.3,
+    "ifbench": 65.1
+   }
+  },
+  "gpt-oss:120b": {
+   "aa_name": "gpt-oss-120b (High)",
+   "url": "https://artificialanalysis.ai/models/gpt-oss-120b",
+   "scores": {
+    "mmlu_pro": 80.8,
+    "gpqa": 78.2,
+    "hle": 19.6,
+    "livecodebench": 87.8,
+    "aime25": 93.4,
+    "ifbench": 69.0
+   }
+  },
+  "llama3.2:1b": {
+   "aa_name": "Llama 3.2 Instruct 1B",
+   "url": "https://artificialanalysis.ai/models/llama-3-2-instruct-1b",
+   "scores": {
+    "mmlu_pro": 20.0,
+    "gpqa": 19.6,
+    "hle": 5.3,
+    "livecodebench": 1.9,
+    "aime25": 0,
+    "ifbench": 22.8
+   }
+  },
+  "llama3.2:3b": {
+   "aa_name": "Llama 3.2 Instruct 3B",
+   "url": "https://artificialanalysis.ai/models/llama-3-2-instruct-3b",
+   "scores": {
+    "mmlu_pro": 34.7,
+    "gpqa": 25.5,
+    "hle": 5.2,
+    "livecodebench": 8.3,
+    "aime25": 3.3,
+    "ifbench": 26.2
+   }
+  },
+  "llama3.1:8b": {
+   "aa_name": "Llama 3.1 Instruct 8B",
+   "url": "https://artificialanalysis.ai/models/llama-3-1-instruct-8b",
+   "scores": {
+    "mmlu_pro": 47.6,
+    "gpqa": 25.9,
+    "hle": 5.1,
+    "livecodebench": 11.6,
+    "aime25": 4.3,
+    "ifbench": 28.6
+   }
+  },
+  "llama3.3:70b": {
+   "aa_name": "Llama 3.3 Instruct 70B",
+   "url": "https://artificialanalysis.ai/models/llama-3-3-instruct-70b",
+   "scores": {
+    "mmlu_pro": 71.3,
+    "gpqa": 49.8,
+    "hle": 3.6,
+    "livecodebench": 28.8,
+    "aime25": 7.7,
+    "ifbench": 47.1
+   }
+  },
+  "llama4:scout": {
+   "aa_name": "Llama 4 Scout",
+   "url": "https://artificialanalysis.ai/models/llama-4-scout",
+   "scores": {
+    "mmlu_pro": 75.2,
+    "gpqa": 58.7,
+    "hle": 3.8,
+    "livecodebench": 29.9,
+    "aime25": 14.0,
+    "ifbench": 39.5,
+    "mmmu_pro": 52.9
+   }
+  },
+  "gemma3:1b": {
+   "aa_name": "Gemma 3 1B Instruct",
+   "url": "https://artificialanalysis.ai/models/gemma-3-1b",
+   "scores": {
+    "mmlu_pro": 13.5,
+    "gpqa": 23.7,
+    "hle": 5.2,
+    "livecodebench": 1.7,
+    "aime25": 3.3,
+    "ifbench": 19.9
+   }
+  },
+  "gemma3:4b": {
+   "aa_name": "Gemma 3 4B Instruct",
+   "url": "https://artificialanalysis.ai/models/gemma-3-4b",
+   "scores": {
+    "mmlu_pro": 41.7,
+    "gpqa": 29.1,
+    "hle": 5.2,
+    "livecodebench": 11.2,
+    "aime25": 12.7,
+    "ifbench": 28.3,
+    "mmmu_pro": 29.9
+   }
+  },
+  "gemma3:12b": {
+   "aa_name": "Gemma 3 12B Instruct",
+   "url": "https://artificialanalysis.ai/models/gemma-3-12b",
+   "scores": {
+    "mmlu_pro": 59.5,
+    "gpqa": 34.9,
+    "hle": 4.8,
+    "livecodebench": 13.7,
+    "aime25": 18.3,
+    "ifbench": 36.7,
+    "mmmu_pro": 37.5
+   }
+  },
+  "gemma3:27b": {
+   "aa_name": "Gemma 3 27B Instruct",
+   "url": "https://artificialanalysis.ai/models/gemma-3-27b",
+   "scores": {
+    "mmlu_pro": 66.9,
+    "gpqa": 42.8,
+    "hle": 4.7,
+    "livecodebench": 13.7,
+    "aime25": 20.7,
+    "ifbench": 31.8,
+    "mmmu_pro": 48.0
+   }
+  },
+  "mistral-small3.2:24b": {
+   "aa_name": "Mistral Small 3.2",
+   "url": "https://artificialanalysis.ai/models/mistral-small-3-2",
+   "scores": {
+    "mmlu_pro": 68.1,
+    "gpqa": 50.5,
+    "hle": 4.3,
+    "livecodebench": 27.5,
+    "aime25": 27.0,
+    "ifbench": 33.5,
+    "mmmu_pro": 48.0
+   }
+  },
+  "ministral-3:3b": {
+   "aa_name": "Ministral 3 3B",
+   "url": "https://artificialanalysis.ai/models/ministral-3-3b",
+   "scores": {
+    "mmlu_pro": 52.4,
+    "gpqa": 35.8,
+    "hle": 5.4,
+    "livecodebench": 24.7,
+    "aime25": 22.0,
+    "ifbench": 26.8,
+    "mmmu_pro": 38.1
+   }
+  },
+  "ministral-3:8b": {
+   "aa_name": "Ministral 3 8B",
+   "url": "https://artificialanalysis.ai/models/ministral-3-8b",
+   "scores": {
+    "mmlu_pro": 64.2,
+    "gpqa": 47.1,
+    "hle": 4.3,
+    "livecodebench": 30.3,
+    "aime25": 31.7,
+    "ifbench": 29.1,
+    "mmmu_pro": 46.0
+   }
+  },
+  "ministral-3:14b": {
+   "aa_name": "Ministral 3 14B",
+   "url": "https://artificialanalysis.ai/models/ministral-3-14b",
+   "scores": {
+    "mmlu_pro": 69.3,
+    "gpqa": 57.2,
+    "hle": 4.6,
+    "livecodebench": 35.1,
+    "aime25": 30.0,
+    "ifbench": 32.0,
+    "mmmu_pro": 49.8
+   }
+  },
+  "phi4-mini:3.8b": {
+   "aa_name": "Phi-4 Mini Instruct",
+   "url": "https://artificialanalysis.ai/models/phi-4-mini",
+   "scores": {
+    "mmlu_pro": 46.5,
+    "gpqa": 33.1,
+    "hle": 4.5,
+    "livecodebench": 12.6,
+    "aime25": 6.7,
+    "ifbench": 21.1
+   }
+  },
+  "phi4:14b": {
+   "aa_name": "Phi-4",
+   "url": "https://artificialanalysis.ai/models/phi-4",
+   "scores": {
+    "mmlu_pro": 71.4,
+    "gpqa": 57.5,
+    "hle": 3.8,
+    "livecodebench": 23.1,
+    "aime25": 18.0,
+    "ifbench": 23.5
+   }
+  },
+  "lfm2:24b": {
+   "aa_name": "LFM2 24B A2B",
+   "url": "https://artificialanalysis.ai/models/lfm2-24b-a2b",
+   "scores": {
+    "gpqa": 47.4,
+    "hle": 4.2,
+    "ifbench": 45.9
+   }
+  },
+  "glm-4.7-flash": {
+   "aa_name": "GLM-4.7-Flash (Reasoning)",
+   "url": "https://artificialanalysis.ai/models/glm-4-7-flash",
+   "scores": {
+    "gpqa": 58.1,
+    "hle": 7.1,
+    "ifbench": 60.8
+   }
+  },
+  "nemotron-3-super:120b": {
+   "aa_name": "NVIDIA Nemotron 3 Super 120B A12B (Reasoning)",
+   "url": "https://artificialanalysis.ai/models/nvidia-nemotron-3-super-120b-a12b",
+   "scores": {
+    "gpqa": 80.0,
+    "hle": 19.2,
+    "ifbench": 71.5
+   }
+  },
+  "deepseek-r1:8b": {
+   "aa_name": "DeepSeek R1 0528 Qwen3 8B",
+   "url": "https://artificialanalysis.ai/models/deepseek-r1-qwen3-8b",
+   "scores": {
+    "mmlu_pro": 73.9,
+    "gpqa": 61.2,
+    "hle": 5.6,
+    "livecodebench": 51.3,
+    "aime25": 63.7,
+    "ifbench": 19.9
+   }
+  },
+  "deepseek-r1:14b": {
+   "aa_name": "DeepSeek R1 Distill Qwen 14B",
+   "url": "https://artificialanalysis.ai/models/deepseek-r1-distill-qwen-14b",
+   "scores": {
+    "mmlu_pro": 74.0,
+    "gpqa": 48.4,
+    "hle": 4.4,
+    "livecodebench": 37.6,
+    "aime25": 55.7,
+    "ifbench": 22.1
+   }
+  },
+  "deepseek-r1:32b": {
+   "aa_name": "DeepSeek R1 Distill Qwen 32B",
+   "url": "https://artificialanalysis.ai/models/deepseek-r1-distill-qwen-32b",
+   "scores": {
+    "mmlu_pro": 73.9,
+    "gpqa": 61.5,
+    "hle": 5.5,
+    "livecodebench": 27.0,
+    "aime25": 63.0,
+    "ifbench": 22.9
+   }
+  },
+  "deepseek-r1:70b": {
+   "aa_name": "DeepSeek R1 Distill Llama 70B",
+   "url": "https://artificialanalysis.ai/models/deepseek-r1-distill-llama-70b",
+   "scores": {
+    "mmlu_pro": 79.5,
+    "gpqa": 40.2,
+    "hle": 6.1,
+    "livecodebench": 26.6,
+    "aime25": 53.7,
+    "ifbench": 27.6
+   }
+  },
+  "deepseek-r1:671b": {
+   "aa_name": "DeepSeek R1 0528 (May '25)",
+   "url": "https://artificialanalysis.ai/models/deepseek-r1",
+   "scores": {
+    "mmlu_pro": 84.9,
+    "gpqa": 81.3,
+    "hle": 14.9,
+    "livecodebench": 77.0,
+    "aime25": 76.0,
+    "ifbench": 39.6
+   }
+  },
+  "magistral:24b": {
+   "aa_name": "Magistral Small 1",
+   "url": "https://artificialanalysis.ai/models/magistral-small",
+   "scores": {
+    "mmlu_pro": 74.6,
+    "gpqa": 64.1,
+    "hle": 7.2,
+    "livecodebench": 51.4,
+    "aime25": 41.3,
+    "ifbench": 24.8
+   }
+  },
+  "qwen2.5-coder:7b": {
+   "aa_name": "Qwen2.5 Coder Instruct 7B ",
+   "url": "https://artificialanalysis.ai/models/qwen2-5-coder-7b-instruct",
+   "scores": {
+    "mmlu_pro": 47.3,
+    "gpqa": 33.9,
+    "hle": 4.8,
+    "livecodebench": 12.6
+   }
+  },
+  "qwen2.5-coder:32b": {
+   "aa_name": "Qwen2.5 Coder Instruct 32B",
+   "url": "https://artificialanalysis.ai/models/qwen2-5-coder-32b-instruct",
+   "scores": {
+    "mmlu_pro": 63.5,
+    "gpqa": 41.7,
+    "hle": 3.8,
+    "livecodebench": 29.5
+   }
+  },
+  "qwen3-coder:30b": {
+   "aa_name": "Qwen3 Coder 30B A3B Instruct",
+   "url": "https://artificialanalysis.ai/models/qwen3-coder-30b-a3b-instruct",
+   "scores": {
+    "mmlu_pro": 70.6,
+    "gpqa": 51.6,
+    "hle": 4.0,
+    "livecodebench": 40.3,
+    "aime25": 29.0,
+    "ifbench": 32.7
+   }
+  },
+  "qwen3-coder-next": {
+   "aa_name": "Qwen3 Coder Next",
+   "url": "https://artificialanalysis.ai/models/qwen3-coder-next",
+   "scores": {
+    "gpqa": 73.7,
+    "hle": 10.1,
+    "ifbench": 35.2
+   }
+  },
+  "qwen3.6:27b": {
+   "aa_name": "Qwen3.6 27B (Reasoning)",
+   "url": "https://artificialanalysis.ai/models/qwen3-6-27b",
+   "scores": {
+    "gpqa": 84.2,
+    "hle": 21.6,
+    "ifbench": 67.6,
+    "mmmu_pro": 74.6
+   }
+  },
+  "qwen3.6:35b": {
+   "aa_name": "Qwen3.6 35B A3B (Reasoning)",
+   "url": "https://artificialanalysis.ai/models/qwen3-6-35b-a3b",
+   "scores": {
+    "gpqa": 84.1,
+    "hle": 22.2,
+    "ifbench": 64.4,
+    "mmmu_pro": 75.0
+   }
+  },
+  "devstral-small-2:24b": {
+   "aa_name": "Devstral Small 2",
+   "url": "https://artificialanalysis.ai/models/devstral-small-2",
+   "scores": {
+    "mmlu_pro": 67.8,
+    "gpqa": 53.2,
+    "hle": 3.4,
+    "livecodebench": 34.8,
+    "aime25": 34.3,
+    "ifbench": 31.2,
+    "mmmu_pro": 44.6
+   }
+  },
+  "qwen3-vl:4b": {
+   "aa_name": "Qwen3 VL 4B (Reasoning)",
+   "url": "https://artificialanalysis.ai/models/qwen3-vl-4b-reasoning",
+   "scores": {
+    "mmlu_pro": 70.0,
+    "gpqa": 49.4,
+    "hle": 4.4,
+    "livecodebench": 32.0,
+    "aime25": 25.7,
+    "ifbench": 36.6,
+    "mmmu_pro": 52.0
+   }
+  },
+  "qwen3-vl:8b": {
+   "aa_name": "Qwen3 VL 8B (Reasoning)",
+   "url": "https://artificialanalysis.ai/models/qwen3-vl-8b-reasoning",
+   "scores": {
+    "mmlu_pro": 74.9,
+    "gpqa": 57.9,
+    "hle": 3.3,
+    "livecodebench": 35.3,
+    "aime25": 30.7,
+    "ifbench": 39.9,
+    "mmmu_pro": 56.6
+   }
+  },
+  "qwen3-vl:30b": {
+   "aa_name": "Qwen3 VL 30B A3B (Reasoning)",
+   "url": "https://artificialanalysis.ai/models/qwen3-vl-30b-a3b-reasoning",
+   "scores": {
+    "mmlu_pro": 80.7,
+    "gpqa": 72.0,
+    "hle": 8.7,
+    "livecodebench": 69.7,
+    "aime25": 82.3,
+    "ifbench": 45.1,
+    "mmmu_pro": 61.8
+   }
+  },
+  "qwen3-vl:32b": {
+   "aa_name": "Qwen3 VL 32B (Reasoning)",
+   "url": "https://artificialanalysis.ai/models/qwen3-vl-32b-reasoning",
+   "scores": {
+    "mmlu_pro": 81.8,
+    "gpqa": 73.3,
+    "hle": 9.6,
+    "livecodebench": 73.8,
+    "aime25": 84.7,
+    "ifbench": 59.4,
+    "mmmu_pro": 63.4
+   }
+  },
+  "llama3.2-vision:11b": {
+   "aa_name": "Llama 3.2 Instruct 11B (Vision)",
+   "url": "https://artificialanalysis.ai/models/llama-3-2-instruct-11b-vision",
+   "scores": {
+    "mmlu_pro": 46.4,
+    "gpqa": 22.1,
+    "hle": 5.5,
+    "livecodebench": 11.0,
+    "aime25": 1.7,
+    "ifbench": 30.4,
+    "mmmu_pro": 29.3
+   }
+  }
+ }
+}

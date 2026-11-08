@@ -6,6 +6,25 @@ use eframe::egui::{self, Color32, RichText};
 use local_ai_fit::*;
 use std::sync::mpsc::{channel, Receiver};
 
+#[derive(PartialEq, Clone, Copy)]
+enum Tab {
+    Fit,
+    Compare,
+}
+
+/// 비교 탭에서 고를 수 있는 최대 모델 수(막대 색 수와 같음)
+const MAX_PICK: usize = 8;
+const PICK_COLORS: [Color32; MAX_PICK] = [
+    Color32::from_rgb(86, 156, 214),
+    Color32::from_rgb(230, 145, 56),
+    Color32::from_rgb(106, 190, 120),
+    Color32::from_rgb(214, 94, 120),
+    Color32::from_rgb(160, 120, 220),
+    Color32::from_rgb(70, 190, 190),
+    Color32::from_rgb(215, 200, 80),
+    Color32::from_rgb(170, 170, 170),
+];
+
 struct App {
     models: Vec<Model>,
     source: String,
@@ -16,6 +35,12 @@ struct App {
     show_all: bool,
     updating: Option<Receiver<Option<Vec<Model>>>>,
     status: String,
+    tab: Tab,
+    bench: Benchmarks,
+    /// 비교 탭에서 고른 모델 태그(고른 순서 = 막대 색 순서)
+    picked: Vec<String>,
+    search: String,
+    only_fit: bool,
 }
 
 impl App {
@@ -23,7 +48,7 @@ impl App {
         add_korean_font(&cc.egui_ctx);
         let (models, source) = load_models();
         let detected = detect();
-        Self {
+        let mut app = Self {
             ram: detected.ram,
             vram: detected.gpu.as_ref().map_or(0.0, |g| g.vram),
             models,
@@ -33,7 +58,26 @@ impl App {
             show_all: false,
             updating: None,
             status: String::new(),
-        }
+            tab: Tab::Fit,
+            bench: load_benchmarks(),
+            picked: Vec::new(),
+            search: String::new(),
+            only_fit: true,
+        };
+        app.picked = app.default_picks();
+        app
+    }
+
+    /// 처음 비교 탭에 보여줄 모델: GPU에 전부 올라가는 점수 있는 모델 중 큰 것 3개
+    fn default_picks(&self) -> Vec<String> {
+        let sys = self.sys();
+        let mut cands: Vec<&Model> = self
+            .models
+            .iter()
+            .filter(|m| self.bench.models.contains_key(&m.tag) && fit(m, &sys) == Fit::Gpu)
+            .collect();
+        cands.sort_by(|a, b| b.size.total_cmp(&a.size));
+        cands.into_iter().take(3).map(|m| m.tag.clone()).collect()
     }
 
     /// 화면에서 고친 RAM·VRAM을 반영한 사양
@@ -114,7 +158,12 @@ impl eframe::App for App {
 
         egui::Panel::top("spec").show(ui, |ui| {
             ui.add_space(6.0);
-            ui.heading("내 PC에서 돌릴 수 있는 로컬 AI 모델");
+            ui.horizontal(|ui| {
+                ui.heading("내 PC에서 돌릴 수 있는 로컬 AI 모델");
+                ui.add_space(20.0);
+                ui.selectable_value(&mut self.tab, Tab::Fit, RichText::new("모델 목록").size(15.0));
+                ui.selectable_value(&mut self.tab, Tab::Compare, RichText::new("벤치마크 비교").size(15.0));
+            });
             ui.add_space(4.0);
             egui::Grid::new("spec_grid").num_columns(3).spacing([12.0, 6.0]).show(ui, |ui| {
                 ui.label("CPU");
@@ -156,6 +205,16 @@ impl eframe::App for App {
             ui.add_space(6.0);
         });
 
+        match self.tab {
+            Tab::Fit => self.fit_view(ui, &sys),
+            Tab::Compare => self.compare_view(ui, &sys),
+        }
+    }
+}
+
+impl App {
+    fn fit_view(&mut self, ui: &mut egui::Ui, sys: &Sys) {
+        let sys = sys.clone();
         egui::Panel::left("cats").exact_size(150.0).show(ui, |ui| {
             ui.add_space(6.0);
             for cat in CATEGORIES {
@@ -202,6 +261,163 @@ impl eframe::App for App {
             });
         });
     }
+
+    fn compare_view(&mut self, ui: &mut egui::Ui, sys: &Sys) {
+        egui::Panel::left("pick").exact_size(290.0).show(ui, |ui| {
+            ui.add_space(6.0);
+            ui.strong(format!("비교할 모델 고르기 ({}/{MAX_PICK})", self.picked.len()));
+            ui.add(egui::TextEdit::singleline(&mut self.search).hint_text("이름으로 찾기"));
+            ui.checkbox(&mut self.only_fit, "내 PC에서 돌릴 수 있는 것만");
+            ui.horizontal(|ui| {
+                if ui.button("모두 해제").clicked() {
+                    self.picked.clear();
+                }
+                if ui.button("처음 추천으로").clicked() {
+                    self.picked = self.default_picks();
+                }
+            });
+            ui.weak(format!("벤치마크 점수가 있는 모델만 보여요({}개).", self.bench.models.len()));
+            ui.separator();
+
+            let q = self.search.to_lowercase();
+            let mut toggle = None;
+            egui::ScrollArea::vertical().id_salt("pick_list").auto_shrink(false).show(ui, |ui| {
+                for cat in CATEGORIES {
+                    let list: Vec<(&Model, Fit)> = self
+                        .models
+                        .iter()
+                        .filter(|m| m.cat == cat && self.bench.models.contains_key(&m.tag) && m.tag.to_lowercase().contains(&q))
+                        .map(|m| (m, fit(m, sys)))
+                        .filter(|(_, f)| !self.only_fit || *f != Fit::No)
+                        .collect();
+                    if list.is_empty() {
+                        continue;
+                    }
+                    ui.add_space(4.0);
+                    ui.weak(cat);
+                    for (m, f) in list {
+                        let pos = self.picked.iter().position(|t| t == &m.tag);
+                        let mut on = pos.is_some();
+                        let full = self.picked.len() >= MAX_PICK && !on;
+                        ui.horizontal(|ui| {
+                            let check = egui::Checkbox::new(&mut on, RichText::new(&m.tag).monospace());
+                            let resp = ui.add_enabled(!full, check);
+                            if resp.changed() {
+                                toggle = Some(m.tag.clone());
+                            }
+                            if full {
+                                resp.on_disabled_hover_text(format!("한 번에 {MAX_PICK}개까지 비교할 수 있어요"));
+                            }
+                            if let Some(i) = pos {
+                                swatch(ui, PICK_COLORS[i]);
+                            }
+                            ui.label(RichText::new(f.label()).small().color(fit_color(f)));
+                        });
+                    }
+                }
+            });
+            if let Some(tag) = toggle {
+                match self.picked.iter().position(|t| *t == tag) {
+                    Some(i) => {
+                        self.picked.remove(i);
+                    }
+                    None => self.picked.push(tag),
+                }
+            }
+        });
+
+        egui::CentralPanel::default_margins().show(ui, |ui| {
+            let picks: Vec<(usize, &Model, &BenchModel, Fit)> = self
+                .picked
+                .iter()
+                .filter_map(|t| Some((self.models.iter().find(|m| &m.tag == t)?, self.bench.models.get(t)?)))
+                .enumerate()
+                .map(|(i, (m, b))| (i, m, b, fit(m, sys)))
+                .collect();
+            if picks.is_empty() {
+                ui.label("왼쪽에서 비교할 모델을 골라 주세요.");
+                return;
+            }
+            ui.weak(format!(
+                "점수 출처: {} ({} 기준). 원본 모델로 잰 값이라 Ollama 기본 양자화(Q4)로 돌리면 조금 낮게 나올 수 있어요.",
+                self.bench.source, self.bench.updated
+            ));
+            ui.weak("모델마다 측정된 벤치마크가 달라서 빈 칸이 있어요. 모델 이름을 누르면 출처 페이지가 열려요.");
+            ui.add_space(8.0);
+
+            let benches = &self.bench.benchmarks;
+            egui::ScrollArea::vertical().auto_shrink(false).show(ui, |ui| {
+                egui::Grid::new("bench_table").striped(true).num_columns(3 + benches.len()).spacing([14.0, 6.0]).show(ui, |ui| {
+                    ui.label("");
+                    ui.strong("모델");
+                    ui.strong("실행 방식");
+                    for b in benches {
+                        ui.strong(&b.name).on_hover_text(&b.desc);
+                    }
+                    ui.end_row();
+                    for (i, m, bm, f) in &picks {
+                        swatch(ui, PICK_COLORS[*i]);
+                        ui.hyperlink_to(RichText::new(&m.tag).monospace(), &bm.url)
+                            .on_hover_text(format!("Artificial Analysis 기준 모델: {}", bm.aa_name));
+                        ui.label(RichText::new(f.label()).color(fit_color(*f)));
+                        for b in benches {
+                            let top = picks.iter().filter_map(|p| p.2.scores.get(&b.key)).copied().fold(f64::MIN, f64::max);
+                            match bm.scores.get(&b.key) {
+                                Some(&v) if picks.len() > 1 && v >= top => {
+                                    ui.label(RichText::new(format!("{v:.1}")).strong().color(fit_color(Fit::Gpu)))
+                                }
+                                Some(v) => ui.label(format!("{v:.1}")),
+                                None => ui.weak("–"),
+                            };
+                        }
+                        ui.end_row();
+                    }
+                });
+                if picks.len() > 1 {
+                    ui.weak("초록색 굵은 숫자가 그 벤치마크에서 가장 높은 점수예요.");
+                }
+
+                for b in benches {
+                    if picks.iter().all(|p| !p.2.scores.contains_key(&b.key)) {
+                        continue;
+                    }
+                    ui.add_space(14.0);
+                    ui.horizontal(|ui| {
+                        ui.strong(&b.name);
+                        ui.weak(&b.desc);
+                    });
+                    for (i, m, bm, _) in &picks {
+                        ui.horizontal(|ui| {
+                            ui.allocate_ui_with_layout(egui::vec2(190.0, 18.0), egui::Layout::left_to_right(egui::Align::Center), |ui| {
+                                ui.set_min_width(190.0);
+                                ui.add(egui::Label::new(RichText::new(&m.tag).monospace()).truncate());
+                            });
+                            let w = (ui.available_width() - 70.0).max(60.0);
+                            let (rect, _) = ui.allocate_exact_size(egui::vec2(w, 16.0), egui::Sense::hover());
+                            ui.painter().rect_filled(rect, 3.0, ui.visuals().faint_bg_color);
+                            match bm.scores.get(&b.key) {
+                                Some(&v) => {
+                                    let mut bar = rect;
+                                    bar.set_width(rect.width() * (v as f32 / 100.0).clamp(0.0, 1.0));
+                                    ui.painter().rect_filled(bar, 3.0, PICK_COLORS[*i]);
+                                    ui.label(format!("{v:.1}"));
+                                }
+                                None => {
+                                    ui.weak("자료 없음");
+                                }
+                            }
+                        });
+                    }
+                }
+            });
+        });
+    }
+}
+
+/// 고른 모델의 색 표시(작은 네모)
+fn swatch(ui: &mut egui::Ui, color: Color32) {
+    let (rect, _) = ui.allocate_exact_size(egui::vec2(12.0, 12.0), egui::Sense::hover());
+    ui.painter().rect_filled(rect, 2.0, color);
 }
 
 fn main() -> eframe::Result {
