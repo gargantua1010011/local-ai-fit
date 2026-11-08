@@ -17,9 +17,19 @@ foreach ($e in $exes) {
 $version = (Select-String -Path (Join-Path $proj 'Cargo.toml') -Pattern '^version = "(.+)"').Matches[0].Groups[1].Value
 
 # 실행 중이면 파일이 잠겨 있으니 닫는다
-Get-Process local-ai-fit-gui, local-ai-fit -ErrorAction SilentlyContinue | Stop-Process -Force
+$running = Get-Process local-ai-fit-gui, local-ai-fit -ErrorAction SilentlyContinue
+if ($running) {
+    $running | Stop-Process -Force
+    $running | Wait-Process -Timeout 10 -ErrorAction SilentlyContinue  # 바로 복사하면 아직 잠겨 있을 수 있음
+}
 New-Item -ItemType Directory -Force $dest | Out-Null
-foreach ($e in $exes) { Copy-Item (Join-Path $src $e) $dest -Force }
+foreach ($e in $exes) {
+    # 닫은 직후엔 exe가 잠시 잠겨 있을 수 있어서 몇 번 다시 시도한다
+    for ($try = 1; ; $try++) {
+        try { Copy-Item (Join-Path $src $e) $dest -Force; break }
+        catch { if ($try -ge 5) { throw }; Start-Sleep -Seconds 1 }
+    }
+}
 Copy-Item (Join-Path $PSScriptRoot 'uninstall.ps1') $dest -Force
 # --update로 받아둔 목록이 있으면 같이 옮긴다(설치 폴더에 이미 있으면 그대로 둠)
 $list = Join-Path $src 'models.json'

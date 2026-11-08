@@ -239,14 +239,18 @@ impl App {
 
         egui::CentralPanel::default_margins().show(ui, |ui| {
             let rows = rows(&self.models, &sys, self.cat, self.show_all);
-            match best(&rows) {
-                Some(m) => ui.label(RichText::new(format!("추천: {}  ({})", m.tag, m.note)).strong()),
+            match best(&rows, &self.bench) {
+                Some(m) => {
+                    let score = self.bench.gpqa(&m.tag).map(|g| format!(", GPQA {g:.1}점")).unwrap_or_default();
+                    ui.label(RichText::new(format!("추천: {}  ({}{score})", m.tag, m.note)).strong())
+                }
                 None => ui.label("이 사양에서 돌릴 수 있는 모델이 없어요."),
             };
             ui.weak("기준: 문맥 약 8K 토큰, Ollama 기본 양자화(대부분 Q4_K_M). 속도는 대략적인 체감 등급이에요.");
+            ui.weak("추천은 GPU에 다 올라가는 모델 중 GPQA 점수가 가장 높은 모델이에요. 점수가 없으면 파라미터가 큰 모델을 골라요.");
             ui.add_space(6.0);
 
-            let best_tag = best(&rows).map(|m| m.tag.clone());
+            let best_tag = best(&rows, &self.bench).map(|m| m.tag.clone());
             egui::ScrollArea::both().auto_shrink(false).show(ui, |ui| {
                 egui::Grid::new("models").striped(true).num_columns(7).spacing([16.0, 6.0]).show(ui, |ui| {
                     for h in ["모델", "실행 도구", "크기 GB", "필요 GB", "실행 방식", "속도", "메모"] {
@@ -289,7 +293,7 @@ impl App {
             });
             ui.weak(format!(
                 "벤치마크 점수가 있는 모델만 보여요(로컬 {}개). 맨 아래에 비교용 상용 모델 {}개가 있어요.",
-                self.bench.models.len(),
+                self.models.iter().filter(|m| self.bench.models.contains_key(&m.tag)).count(),
                 self.bench.commercial.len()
             ));
             ui.separator();

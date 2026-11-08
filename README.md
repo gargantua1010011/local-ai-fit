@@ -71,7 +71,7 @@ CLI를 탐색기에서 더블클릭하면 결과를 보여주고 Enter를 기다
 - 여유분: RAM은 OS 몫 3GB, VRAM은 화면·드라이버 몫 0.7GB를 뺀다.
 - GPU 전체: 필요 ≤ VRAM → 빠름 / GPU+CPU 분할: 필요 ≤ VRAM+RAM / CPU: GPU 없음 + 필요 ≤ RAM / `gpu_only`(이미지 생성)는 VRAM에 들어가야만 가능.
 - 속도 등급: MoE는 활성 파라미터만 읽으므로 분할·CPU에서도 한 단계 빠르게 본다. 실측 아님.
-- 추천: 분야별로 GPU에 전부 올라가는 모델 중 가장 큰 것.
+- 추천: 분야별로 GPU에 전부 올라가는 모델(없으면 실행 가능한 모델) 중 GPQA Diamond 점수가 가장 높은 것. 점수가 없는 모델은 점수 있는 모델 전부보다 파라미터가 클 때만 고른다. 파일 크기로 고르면 gemma3n처럼 인코더가 커서 파일만 큰 모델이 뽑히기 때문.
 - "Q8도 GPU에 들어감": 파라미터×1.07GB(+비전 인코더 등)로 Q8_0 크기를 추정해 VRAM에 들어가면 표시.
 
 ## 벤치마크 점수
@@ -83,7 +83,7 @@ CLI를 탐색기에서 더블클릭하면 결과를 보여주고 Enter를 기다
 - 모델마다 측정된 벤치마크가 달라 빈 칸이 있다. 예전 모델은 MMLU-Pro·LiveCodeBench·AIME가 있고, 최근 모델은 GPQA·HLE·IFBench 위주다.
 - 점수가 없는 모델(임베딩, 음성인식, 이미지 생성, exaone3.5 등)은 비교 탭에 나오지 않는다.
 - 상용 모델: 최신 12개(Claude, GPT-6, Gemini, Grok)와 예전 참고용 8개(GPT-4o, o3, GPT-5, Claude 3.5·4 Sonnet, Gemini 2.5). 생각 수준을 고를 수 있는 모델은 가장 높은 설정 점수다. AA가 최신 상용 모델엔 HLE 등 일부 벤치마크만 공개해서 빈 칸이 많다. 처음 열면 내 PC 추천 모델 3개와 GPT-4o가 골라져 있다.
-- 갱신: `python scripts/fetch_benchmarks.py` → `benchmarks.json`(빌드 때 exe에 포함). Ollama 태그 ↔ AA 모델 연결은 스크립트의 `MAPPING`, 상용 모델 목록은 `COMMERCIAL`에서 고친다.
+- 갱신: `python scripts/fetch_benchmarks.py` → `benchmarks.json`(빌드 때 exe에 포함). Ollama 태그 ↔ AA 모델 연결은 스크립트의 `MAPPING`, 상용 모델 목록은 `COMMERCIAL`에서 고친다. "최신 목록 받기"로 새로 추가된 모델도 `MAPPING`에 있어야 점수가 나온다(gemma3n, granite4.1, nemotron-3-nano 등은 넣어 둠).
 
 ## GPU 감지
 

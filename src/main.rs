@@ -25,6 +25,7 @@ fn print_fit(models: &[Model], s: &Sys, show_all: bool) {
     }
     println!("\n기준: 문맥 약 8K 토큰, Ollama 기본 양자화(대부분 Q4_K_M). 속도는 대략적인 체감 등급이에요.\n");
 
+    let bench = load_benchmarks();
     for cat in CATEGORIES {
         let rows = rows(models, s, cat, show_all);
         println!("■ {cat}");
@@ -32,8 +33,11 @@ fn print_fit(models: &[Model], s: &Sys, show_all: bool) {
             println!("  (이 사양에서 돌릴 수 있는 모델이 없어요)\n");
             continue;
         }
-        if let Some(m) = best(&rows) {
-            println!("  추천: {}", m.tag);
+        if let Some(m) = best(&rows, &bench) {
+            match bench.gpqa(&m.tag) {
+                Some(g) => println!("  추천: {} (GPQA {g:.1}점)", m.tag),
+                None => println!("  추천: {}", m.tag),
+            }
         }
         println!("  {} {} {} {} {} 메모", pad("모델", 24), pad("실행도구", 11), pad("크기/필요(GB)", 14), pad("실행 방식", 12), pad("속도", 9));
         for (m, f) in rows {

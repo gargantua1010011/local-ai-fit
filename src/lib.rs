@@ -237,12 +237,23 @@ pub fn rows<'a>(models: &'a [Model], s: &Sys, cat: &str, show_all: bool) -> Vec<
     rows
 }
 
-/// 추천: GPU에 전부 올라가는 것 중 가장 큰 모델, 없으면 실행 가능한 것 중 가장 큰 모델
-pub fn best<'a>(rows: &[(&'a Model, Fit)]) -> Option<&'a Model> {
-    let biggest = |want: &dyn Fn(Fit) -> bool| {
-        rows.iter().filter(|r| want(r.1)).max_by(|a, b| a.0.size.total_cmp(&b.0.size)).map(|r| r.0)
+/// 추천: GPU에 전부 올라가는 모델 중에서(없으면 실행 가능한 모델 중에서) 고른다.
+/// GPQA 점수가 있으면 점수가 가장 높은 모델. 점수 없는 모델은 점수 있는 모델 전부보다
+/// 파라미터가 클 때만 고른다(파일 크기는 비전·오디오 인코더 등 때문에 성능과 안 맞을 수 있음, 예: gemma3n).
+pub fn best<'a>(rows: &[(&'a Model, Fit)], bench: &Benchmarks) -> Option<&'a Model> {
+    let size = |m: &Model| m.params.unwrap_or(m.size);
+    let pick = |want: &dyn Fn(Fit) -> bool| {
+        let pool: Vec<&Model> = rows.iter().filter(|r| want(r.1)).map(|r| r.0).collect();
+        let (scored, unscored): (Vec<&Model>, Vec<&Model>) = pool.iter().partition(|m| bench.gpqa(&m.tag).is_some());
+        let top_scored = scored.iter().max_by(|a, b| bench.gpqa(&a.tag).unwrap().total_cmp(&bench.gpqa(&b.tag).unwrap()));
+        let top_unscored = unscored.iter().max_by(|a, b| size(a).total_cmp(&size(b)));
+        let max_scored_size = scored.iter().map(|m| size(m)).fold(0.0, f64::max);
+        match (top_scored, top_unscored) {
+            (Some(s), Some(u)) => Some(if size(u) > max_scored_size { *u } else { *s }),
+            (s, u) => s.or(u).copied(),
+        }
     };
-    biggest(&|f| f == Fit::Gpu).or_else(|| biggest(&|f| f != Fit::No))
+    pick(&|f| f == Fit::Gpu).or_else(|| pick(&|f| f != Fit::No))
 }
 
 /// 더 정확한 Q8 양자화도 GPU에 다 들어가는지
@@ -315,6 +326,13 @@ pub struct CommercialModel {
     pub group: String,
     #[serde(flatten)]
     pub bench: BenchModel,
+}
+
+impl Benchmarks {
+    /// 추천에 쓰는 점수. GPQA Diamond는 거의 모든 모델에 있고 작은 모델끼리도 차이가 잘 난다.
+    pub fn gpqa(&self, tag: &str) -> Option<f64> {
+        self.models.get(tag)?.scores.get("gpqa").copied()
+    }
 }
 
 pub fn load_benchmarks() -> Benchmarks {

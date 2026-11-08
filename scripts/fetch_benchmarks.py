@@ -33,7 +33,7 @@ BENCHMARKS = [
 
 # Ollama 태그 → AA 모델 slug. 생각(reasoning) 모드가 기본인 모델은 reasoning 쪽 점수를 쓴다.
 # Ollama 기본 태그가 어느 판인지는 레지스트리 digest로 확인함(2026-11-08):
-#   qwen3:4b/30b/235b = thinking-2507, qwen3-vl = thinking, magistral:24b = 2506(Small 1)
+#   qwen3:4b/30b/235b = thinking-2507, qwen3-vl(235b 포함) = thinking, qwen3-next:80b = thinking, magistral:24b = 2506(Small 1)
 MAPPING = {
     "gemma4:e2b": "gemma-4-e2b",
     "gemma4:e4b": "gemma-4-e4b",
@@ -92,6 +92,20 @@ MAPPING = {
     "qwen3-vl:30b": "qwen3-vl-30b-a3b-reasoning",
     "qwen3-vl:32b": "qwen3-vl-32b-reasoning",
     "llama3.2-vision:11b": "llama-3-2-instruct-11b-vision",
+    # 내장 목록엔 없고 "최신 목록 받기"(--update)로 추가되는 모델(2026-11-08 기준)
+    "gemma3n:e2b": "gemma-3n-e2b",
+    "gemma3n:e4b": "gemma-3n-e4b",
+    "gemma3:270m": "gemma-3-270m",
+    "qwen3-vl:235b": "qwen3-vl-235b-a22b-reasoning",
+    "qwen3-next:80b": "qwen3-next-80b-a3b-reasoning",
+    "lfm2.5-thinking:1.2b": "lfm2-5-1-2b-thinking",
+    "nemotron-3-nano:4b": "nvidia-nemotron-3-nano-4b",
+    "nemotron-3-nano:30b": "nvidia-nemotron-3-nano-30b-a3b-reasoning",
+    "nemotron-3.5-lightning:30b": "nemotron-3-5-lightning",
+    "granite4.1:3b": "granite-4-1-3b",
+    "granite4.1:8b": "granite-4-1-8b",
+    "granite4.1:30b": "granite-4-1-30b",
+    "deepseek-ocr:3b": "deepseek-ocr",
 }
 
 # 비교용 상용(클라우드) 모델: (묶음, 화면에 보일 이름, AA slug). 생각 수준을 고를 수 있는 모델은 가장 높은 설정.

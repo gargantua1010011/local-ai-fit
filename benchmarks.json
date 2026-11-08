@@ -689,6 +689,140 @@
     "ifbench": 30.4,
     "mmmu_pro": 29.3
    }
+  },
+  "gemma3n:e2b": {
+   "aa_name": "Gemma 3n E2B Instruct",
+   "url": "https://artificialanalysis.ai/models/gemma-3n-e2b",
+   "scores": {
+    "mmlu_pro": 37.8,
+    "gpqa": 22.9,
+    "hle": 4.0,
+    "livecodebench": 9.5,
+    "aime25": 10.3,
+    "ifbench": 22.0
+   }
+  },
+  "gemma3n:e4b": {
+   "aa_name": "Gemma 3n E4B Instruct",
+   "url": "https://artificialanalysis.ai/models/gemma-3n-e4b",
+   "scores": {
+    "mmlu_pro": 48.8,
+    "gpqa": 29.6,
+    "hle": 4.4,
+    "livecodebench": 14.6,
+    "aime25": 14.3,
+    "ifbench": 27.9,
+    "mmmu_pro": 26.2
+   }
+  },
+  "gemma3:270m": {
+   "aa_name": "Gemma 3 270M",
+   "url": "https://artificialanalysis.ai/models/gemma-3-270m",
+   "scores": {
+    "mmlu_pro": 5.5,
+    "gpqa": 22.4,
+    "hle": 3.6,
+    "livecodebench": 0.3,
+    "aime25": 2.3,
+    "ifbench": 12.1
+   }
+  },
+  "qwen3-vl:235b": {
+   "aa_name": "Qwen3 VL 235B A22B (Reasoning)",
+   "url": "https://artificialanalysis.ai/models/qwen3-vl-235b-a22b-reasoning",
+   "scores": {
+    "mmlu_pro": 83.6,
+    "gpqa": 77.2,
+    "hle": 10.1,
+    "livecodebench": 64.6,
+    "aime25": 88.3,
+    "ifbench": 56.5,
+    "mmmu_pro": 68.7
+   }
+  },
+  "qwen3-next:80b": {
+   "aa_name": "Qwen3 Next 80B A3B (Reasoning)",
+   "url": "https://artificialanalysis.ai/models/qwen3-next-80b-a3b-reasoning",
+   "scores": {
+    "mmlu_pro": 82.4,
+    "gpqa": 75.9,
+    "hle": 12.6,
+    "livecodebench": 78.4,
+    "aime25": 84.3,
+    "ifbench": 60.7
+   }
+  },
+  "lfm2.5-thinking:1.2b": {
+   "aa_name": "LFM2.5-1.2B-Thinking",
+   "url": "https://artificialanalysis.ai/models/lfm2-5-1-2b-thinking",
+   "scores": {
+    "gpqa": 33.9,
+    "hle": 6.2,
+    "ifbench": 41.8
+   }
+  },
+  "nemotron-3-nano:4b": {
+   "aa_name": "NVIDIA Nemotron 3 Nano 4B",
+   "url": "https://artificialanalysis.ai/models/nvidia-nemotron-3-nano-4b",
+   "scores": {
+    "gpqa": 51.3,
+    "hle": 4.9,
+    "ifbench": 58.2
+   }
+  },
+  "nemotron-3-nano:30b": {
+   "aa_name": "NVIDIA Nemotron 3 Nano 30B A3B (Reasoning)",
+   "url": "https://artificialanalysis.ai/models/nvidia-nemotron-3-nano-30b-a3b-reasoning",
+   "scores": {
+    "mmlu_pro": 79.4,
+    "gpqa": 75.7,
+    "hle": 11.4,
+    "livecodebench": 74.1,
+    "aime25": 91.0,
+    "ifbench": 71.1
+   }
+  },
+  "nemotron-3.5-lightning:30b": {
+   "aa_name": "Nemotron 3.5 Lightning",
+   "url": "https://artificialanalysis.ai/models/nemotron-3-5-lightning",
+   "scores": {
+    "gpqa": 74.3,
+    "hle": 10.6
+   }
+  },
+  "granite4.1:3b": {
+   "aa_name": "Granite 4.1 3B",
+   "url": "https://artificialanalysis.ai/models/granite-4-1-3b",
+   "scores": {
+    "gpqa": 31.4,
+    "hle": 3.4,
+    "ifbench": 33.7
+   }
+  },
+  "granite4.1:8b": {
+   "aa_name": "Granite 4.1 8B",
+   "url": "https://artificialanalysis.ai/models/granite-4-1-8b",
+   "scores": {
+    "gpqa": 43.3,
+    "hle": 3.8,
+    "ifbench": 38.6
+   }
+  },
+  "granite4.1:30b": {
+   "aa_name": "Granite 4.1 30B",
+   "url": "https://artificialanalysis.ai/models/granite-4-1-30b",
+   "scores": {
+    "gpqa": 48.1,
+    "hle": 4.2,
+    "ifbench": 44.4
+   }
+  },
+  "deepseek-ocr:3b": {
+   "aa_name": "DeepSeek-OCR",
+   "url": "https://artificialanalysis.ai/models/deepseek-ocr",
+   "scores": {
+    "mmmu_pro": 4.6
+   }
   }
  },
  "commercial": [
