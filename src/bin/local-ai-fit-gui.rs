@@ -241,13 +241,13 @@ impl App {
             let rows = rows(&self.models, &sys, self.cat, self.show_all);
             match best(&rows, &self.bench) {
                 Some(m) => {
-                    let score = self.bench.gpqa(&m.tag).map(|g| format!(", GPQA {g:.1}점")).unwrap_or_default();
+                    let score = self.bench.rec_score(&m.tag, self.cat).map(|g| format!(", {} {g:.1}점", self.bench.rec_label(self.cat))).unwrap_or_default();
                     ui.label(RichText::new(format!("추천: {}  ({}{score})", m.tag, m.note)).strong())
                 }
                 None => ui.label("이 사양에서 돌릴 수 있는 모델이 없어요."),
             };
             ui.weak("기준: 문맥 약 8K 토큰, Ollama 기본 양자화(대부분 Q4_K_M). 속도는 대략적인 체감 등급이에요.");
-            ui.weak("추천은 GPU에 다 올라가는 모델 중 GPQA 점수가 가장 높은 모델이에요. 점수가 없으면 파라미터가 큰 모델을 골라요.");
+            ui.weak(format!("추천은 GPU에 다 올라가는 모델 중 {} 점수가 가장 높은 모델이에요. 점수가 없으면 파라미터가 큰 모델을 골라요.", self.bench.rec_label(self.cat)));
             ui.add_space(6.0);
 
             let best_tag = best(&rows, &self.bench).map(|m| m.tag.clone());
@@ -367,34 +367,36 @@ impl App {
 
             let benches = &self.bench.benchmarks;
             egui::ScrollArea::vertical().auto_shrink(false).show(ui, |ui| {
-                egui::Grid::new("bench_table").striped(true).num_columns(3 + benches.len()).spacing([14.0, 6.0]).show(ui, |ui| {
-                    ui.label("");
-                    ui.strong("모델");
-                    ui.strong("실행 방식");
-                    for b in benches {
-                        ui.strong(&b.name).on_hover_text(&b.desc);
-                    }
-                    ui.end_row();
-                    for (i, name, bm, f) in &picks {
-                        swatch(ui, PICK_COLORS[*i]);
-                        let text = if f.is_some() { RichText::new(*name).monospace() } else { RichText::new(*name) };
-                        ui.hyperlink_to(text, &bm.url).on_hover_text(format!("Artificial Analysis 기준 모델: {}", bm.aa_name));
-                        match f {
-                            Some(f) => ui.label(RichText::new(f.label()).color(fit_color(*f))),
-                            None => ui.weak("클라우드(상용)"),
-                        };
+                egui::ScrollArea::horizontal().id_salt("bench_table_h").show(ui, |ui| {
+                    egui::Grid::new("bench_table").striped(true).num_columns(3 + benches.len()).spacing([14.0, 6.0]).show(ui, |ui| {
+                        ui.label("");
+                        ui.strong("모델");
+                        ui.strong("실행 방식");
                         for b in benches {
-                            let top = picks.iter().filter_map(|p| p.2.scores.get(&b.key)).copied().fold(f64::MIN, f64::max);
-                            match bm.scores.get(&b.key) {
-                                Some(&v) if picks.len() > 1 && v >= top => {
-                                    ui.label(RichText::new(format!("{v:.1}")).strong().color(fit_color(Fit::Gpu)))
-                                }
-                                Some(v) => ui.label(format!("{v:.1}")),
-                                None => ui.weak("–"),
-                            };
+                            ui.strong(&b.name).on_hover_text(&b.desc);
                         }
                         ui.end_row();
-                    }
+                        for (i, name, bm, f) in &picks {
+                            swatch(ui, PICK_COLORS[*i]);
+                            let text = if f.is_some() { RichText::new(*name).monospace() } else { RichText::new(*name) };
+                            ui.hyperlink_to(text, &bm.url).on_hover_text(format!("Artificial Analysis 기준 모델: {}", bm.aa_name));
+                            match f {
+                                Some(f) => ui.label(RichText::new(f.label()).color(fit_color(*f))),
+                                None => ui.weak("클라우드(상용)"),
+                            };
+                            for b in benches {
+                                let top = picks.iter().filter_map(|p| p.2.scores.get(&b.key)).copied().fold(f64::MIN, f64::max);
+                                match bm.scores.get(&b.key) {
+                                    Some(&v) if picks.len() > 1 && v >= top => {
+                                        ui.label(RichText::new(format!("{v:.1}")).strong().color(fit_color(Fit::Gpu)))
+                                    }
+                                    Some(v) => ui.label(format!("{v:.1}")),
+                                    None => ui.weak("–"),
+                                };
+                            }
+                            ui.end_row();
+                        }
+                    });
                 });
                 if picks.len() > 1 {
                     ui.weak("초록색 굵은 숫자가 그 벤치마크에서 가장 높은 점수예요.");

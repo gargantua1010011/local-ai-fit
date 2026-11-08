@@ -238,20 +238,18 @@ pub fn rows<'a>(models: &'a [Model], s: &Sys, cat: &str, show_all: bool) -> Vec<
 }
 
 /// 추천: GPU에 전부 올라가는 모델 중에서(없으면 실행 가능한 모델 중에서) 고른다.
-/// GPQA 점수가 있으면 점수가 가장 높은 모델. 점수 없는 모델은 점수 있는 모델 전부보다
-/// 파라미터가 클 때만 고른다(파일 크기는 비전·오디오 인코더 등 때문에 성능과 안 맞을 수 있음, 예: gemma3n).
+/// 분야 추천 점수(rec_benches)가 있는 모델 중 점수가 가장 높은 것. 점수 있는 모델이 하나도 없을 때만
+/// 파라미터가 가장 큰 모델(파일 크기는 비전·오디오 인코더 등 때문에 성능과 안 맞을 수 있음, 예: gemma3n).
 pub fn best<'a>(rows: &[(&'a Model, Fit)], bench: &Benchmarks) -> Option<&'a Model> {
+    let score = |m: &Model| bench.rec_score(&m.tag, &m.cat);
     let size = |m: &Model| m.params.unwrap_or(m.size);
     let pick = |want: &dyn Fn(Fit) -> bool| {
-        let pool: Vec<&Model> = rows.iter().filter(|r| want(r.1)).map(|r| r.0).collect();
-        let (scored, unscored): (Vec<&Model>, Vec<&Model>) = pool.iter().partition(|m| bench.gpqa(&m.tag).is_some());
-        let top_scored = scored.iter().max_by(|a, b| bench.gpqa(&a.tag).unwrap().total_cmp(&bench.gpqa(&b.tag).unwrap()));
-        let top_unscored = unscored.iter().max_by(|a, b| size(a).total_cmp(&size(b)));
-        let max_scored_size = scored.iter().map(|m| size(m)).fold(0.0, f64::max);
-        match (top_scored, top_unscored) {
-            (Some(s), Some(u)) => Some(if size(u) > max_scored_size { *u } else { *s }),
-            (s, u) => s.or(u).copied(),
-        }
+        let pool = || rows.iter().filter(|r| want(r.1)).map(|r| r.0);
+        pool()
+            .filter_map(|m| Some((m, score(m)?)))
+            .max_by(|a, b| a.1.total_cmp(&b.1))
+            .map(|(m, _)| m)
+            .or_else(|| pool().max_by(|a, b| size(a).total_cmp(&size(b))))
     };
     pick(&|f| f == Fit::Gpu).or_else(|| pick(&|f| f != Fit::No))
 }
@@ -328,10 +326,32 @@ pub struct CommercialModel {
     pub bench: BenchModel,
 }
 
+/// 분야별 추천 점수에 쓰는 벤치마크(평균). 모델 대부분에 값이 있는 것만 고름.
+pub fn rec_benches(cat: &str) -> &'static [&'static str] {
+    match cat {
+        "대화" => &["gpqa", "ifbench"],           // 지식·추론 + 지시 따르기
+        "코딩" => &["scicode", "terminalbench_hard"], // 코드 작성 + 에이전트 코딩
+        "비전" => &["mmmu_pro"],
+        _ => &["gpqa"],
+    }
+}
+
 impl Benchmarks {
-    /// 추천에 쓰는 점수. GPQA Diamond는 거의 모든 모델에 있고 작은 모델끼리도 차이가 잘 난다.
-    pub fn gpqa(&self, tag: &str) -> Option<f64> {
-        self.models.get(tag)?.scores.get("gpqa").copied()
+    /// 추천 점수: 분야 벤치마크의 평균. 하나라도 없으면 None(점수 없는 모델로 취급).
+    pub fn rec_score(&self, tag: &str, cat: &str) -> Option<f64> {
+        let scores = &self.models.get(tag)?.scores;
+        let keys = rec_benches(cat);
+        let sum: Option<f64> = keys.iter().map(|k| scores.get(*k)).sum();
+        Some(sum? / keys.len() as f64)
+    }
+    /// 추천 점수 이름(예: "GPQA Diamond·IFBench 평균")
+    pub fn rec_label(&self, cat: &str) -> String {
+        let keys = rec_benches(cat);
+        let names: Vec<&str> = keys
+            .iter()
+            .map(|k| self.benchmarks.iter().find(|b| b.key == *k).map_or(*k, |b| b.name.as_str()))
+            .collect();
+        if names.len() > 1 { format!("{} 평균", names.join("·")) } else { names[0].to_string() }
     }
 }
 

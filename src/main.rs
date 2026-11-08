@@ -34,8 +34,8 @@ fn print_fit(models: &[Model], s: &Sys, show_all: bool) {
             continue;
         }
         if let Some(m) = best(&rows, &bench) {
-            match bench.gpqa(&m.tag) {
-                Some(g) => println!("  추천: {} (GPQA {g:.1}점)", m.tag),
+            match bench.rec_score(&m.tag, cat) {
+                Some(g) => println!("  추천: {} ({} {g:.1}점)", m.tag, bench.rec_label(cat)),
                 None => println!("  추천: {}", m.tag),
             }
         }

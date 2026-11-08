@@ -1,6 +1,6 @@
 {
  "source": "Artificial Analysis (artificialanalysis.ai) 독립 측정값",
- "updated": "2026-11-08",
+ "updated": "2026-11-09",
  "benchmarks": [
   {
    "key": "mmlu_pro",
@@ -36,6 +36,26 @@
    "key": "mmmu_pro",
    "name": "MMMU-Pro",
    "desc": "이미지를 보고 푸는 문제(비전 모델만)"
+  },
+  {
+   "key": "tau2",
+   "name": "τ²-Bench",
+   "desc": "도구를 불러 가며 고객 상담 업무 처리(에이전트)"
+  },
+  {
+   "key": "terminalbench_hard",
+   "name": "Terminal-Bench Hard",
+   "desc": "터미널에서 직접 명령을 실행하는 코딩 에이전트 작업"
+  },
+  {
+   "key": "lcr",
+   "name": "AA-LCR",
+   "desc": "긴 문서 여러 개를 읽고 답하기(약 10만 토큰)"
+  },
+  {
+   "key": "scicode",
+   "name": "SciCode",
+   "desc": "과학 계산 코드 작성"
   }
  ],
  "models": {
@@ -46,7 +66,11 @@
     "gpqa": 43.3,
     "hle": 4.8,
     "ifbench": 38.0,
-    "mmmu_pro": 44.6
+    "mmmu_pro": 44.6,
+    "tau2": 20.8,
+    "terminalbench_hard": 3.0,
+    "lcr": 16.3,
+    "scicode": 20.9
    }
   },
   "gemma4:e4b": {
@@ -56,7 +80,11 @@
     "gpqa": 57.6,
     "hle": 3.8,
     "ifbench": 44.2,
-    "mmmu_pro": 51.4
+    "mmmu_pro": 51.4,
+    "tau2": 20.8,
+    "terminalbench_hard": 8.3,
+    "lcr": 32.0,
+    "scicode": 24.4
    }
   },
   "gemma4:12b": {
@@ -66,7 +94,11 @@
     "gpqa": 75.3,
     "hle": 15.7,
     "ifbench": 73.5,
-    "mmmu_pro": 69.7
+    "mmmu_pro": 69.7,
+    "tau2": 36.3,
+    "terminalbench_hard": 18.2,
+    "lcr": 63.7,
+    "scicode": 38.2
    }
   },
   "gemma4:26b": {
@@ -76,7 +108,11 @@
     "gpqa": 79.2,
     "hle": 19.3,
     "ifbench": 72.4,
-    "mmmu_pro": 69.2
+    "mmmu_pro": 69.2,
+    "tau2": 43.6,
+    "terminalbench_hard": 13.6,
+    "lcr": 65.7,
+    "scicode": 40.0
    }
   },
   "gemma4:31b": {
@@ -86,7 +122,11 @@
     "gpqa": 85.7,
     "hle": 23.6,
     "ifbench": 75.6,
-    "mmmu_pro": 73.4
+    "mmmu_pro": 73.4,
+    "tau2": 59.9,
+    "terminalbench_hard": 36.4,
+    "lcr": 69.7,
+    "scicode": 45.5
    }
   },
   "qwen3.5:0.8b": {
@@ -96,7 +136,11 @@
     "gpqa": 11.1,
     "hle": 1.1,
     "ifbench": 21.5,
-    "mmmu_pro": 25.8
+    "mmmu_pro": 25.8,
+    "tau2": 47.7,
+    "terminalbench_hard": 0,
+    "lcr": 9.0,
+    "scicode": 0.0
    }
   },
   "qwen3.5:2b": {
@@ -106,7 +150,11 @@
     "gpqa": 45.6,
     "hle": 2.6,
     "ifbench": 31.5,
-    "mmmu_pro": 43.0
+    "mmmu_pro": 43.0,
+    "tau2": 69.0,
+    "terminalbench_hard": 3.8,
+    "lcr": 21.0,
+    "scicode": 2.8
    }
   },
   "qwen3.5:4b": {
@@ -116,7 +164,11 @@
     "gpqa": 77.1,
     "hle": 9.9,
     "ifbench": 52.0,
-    "mmmu_pro": 65.4
+    "mmmu_pro": 65.4,
+    "tau2": 92.1,
+    "terminalbench_hard": 18.2,
+    "lcr": 63.0,
+    "scicode": 16.1
    }
   },
   "qwen3.5:9b": {
@@ -126,7 +178,11 @@
     "gpqa": 80.6,
     "hle": 14.9,
     "ifbench": 66.7,
-    "mmmu_pro": 69.2
+    "mmmu_pro": 69.2,
+    "tau2": 86.8,
+    "terminalbench_hard": 24.2,
+    "lcr": 70.0,
+    "scicode": 29.5
    }
   },
   "qwen3.5:27b": {
@@ -136,7 +192,11 @@
     "gpqa": 85.8,
     "hle": 22.2,
     "ifbench": 75.6,
-    "mmmu_pro": 75.0
+    "mmmu_pro": 75.0,
+    "tau2": 93.9,
+    "terminalbench_hard": 32.6,
+    "lcr": 67.3,
+    "scicode": 39.5
    }
   },
   "qwen3.5:35b": {
@@ -146,7 +206,11 @@
     "gpqa": 84.5,
     "hle": 19.7,
     "ifbench": 72.5,
-    "mmmu_pro": 72.7
+    "mmmu_pro": 72.7,
+    "tau2": 89.2,
+    "terminalbench_hard": 26.5,
+    "lcr": 62.7,
+    "scicode": 37.7
    }
   },
   "qwen3.5:122b": {
@@ -156,7 +220,11 @@
     "gpqa": 85.7,
     "hle": 25.2,
     "ifbench": 75.7,
-    "mmmu_pro": 75.0
+    "mmmu_pro": 75.0,
+    "tau2": 93.6,
+    "terminalbench_hard": 31.1,
+    "lcr": 76.3,
+    "scicode": 39.7
    }
   },
   "qwen3.8:27b": {
@@ -165,7 +233,9 @@
    "scores": {
     "gpqa": 84.5,
     "hle": 14.1,
-    "mmmu_pro": 74.2
+    "mmmu_pro": 74.2,
+    "lcr": 79.7,
+    "scicode": 39.0
    }
   },
   "qwen3:4b": {
@@ -177,7 +247,11 @@
     "hle": 5.9,
     "livecodebench": 64.1,
     "aime25": 82.7,
-    "ifbench": 49.8
+    "ifbench": 49.8,
+    "tau2": 25.4,
+    "terminalbench_hard": 1.5,
+    "lcr": 37.7,
+    "scicode": 25.6
    }
   },
   "qwen3:8b": {
@@ -189,7 +263,11 @@
     "hle": 4.2,
     "livecodebench": 40.6,
     "aime25": 19.0,
-    "ifbench": 33.5
+    "ifbench": 33.5,
+    "tau2": 27.8,
+    "terminalbench_hard": 2.3,
+    "lcr": 0.0,
+    "scicode": 22.6
    }
   },
   "qwen3:14b": {
@@ -201,7 +279,11 @@
     "hle": 4.3,
     "livecodebench": 52.3,
     "aime25": 55.7,
-    "ifbench": 40.5
+    "ifbench": 40.5,
+    "tau2": 34.5,
+    "terminalbench_hard": 3.8,
+    "lcr": 0.0,
+    "scicode": 31.6
    }
   },
   "qwen3:30b": {
@@ -213,7 +295,11 @@
     "hle": 9.8,
     "livecodebench": 70.7,
     "aime25": 56.3,
-    "ifbench": 50.7
+    "ifbench": 50.7,
+    "tau2": 28.1,
+    "terminalbench_hard": 5.3,
+    "lcr": 59.0,
+    "scicode": 33.3
    }
   },
   "qwen3:32b": {
@@ -225,7 +311,11 @@
     "hle": 8.3,
     "livecodebench": 54.6,
     "aime25": 73.0,
-    "ifbench": 36.3
+    "ifbench": 36.3,
+    "tau2": 29.8,
+    "terminalbench_hard": 3.0,
+    "lcr": 0.0,
+    "scicode": 35.4
    }
   },
   "qwen3:235b": {
@@ -237,7 +327,11 @@
     "hle": 15.0,
     "livecodebench": 78.8,
     "aime25": 91.0,
-    "ifbench": 51.2
+    "ifbench": 51.2,
+    "tau2": 53.2,
+    "terminalbench_hard": 13.6,
+    "lcr": 67.0,
+    "scicode": 42.4
    }
   },
   "gpt-oss:20b": {
@@ -249,7 +343,11 @@
     "hle": 11.0,
     "livecodebench": 77.7,
     "aime25": 89.3,
-    "ifbench": 65.1
+    "ifbench": 65.1,
+    "tau2": 60.2,
+    "terminalbench_hard": 10.6,
+    "lcr": 34.7,
+    "scicode": 38.9
    }
   },
   "gpt-oss:120b": {
@@ -261,7 +359,11 @@
     "hle": 19.6,
     "livecodebench": 87.8,
     "aime25": 93.4,
-    "ifbench": 69.0
+    "ifbench": 69.0,
+    "tau2": 65.8,
+    "terminalbench_hard": 23.5,
+    "lcr": 52.0,
+    "scicode": 34.0
    }
   },
   "llama3.2:1b": {
@@ -273,7 +375,11 @@
     "hle": 5.3,
     "livecodebench": 1.9,
     "aime25": 0,
-    "ifbench": 22.8
+    "ifbench": 22.8,
+    "tau2": 0.0,
+    "terminalbench_hard": 0.0,
+    "lcr": 5.0,
+    "scicode": 1.7
    }
   },
   "llama3.2:3b": {
@@ -285,7 +391,10 @@
     "hle": 5.2,
     "livecodebench": 8.3,
     "aime25": 3.3,
-    "ifbench": 26.2
+    "ifbench": 26.2,
+    "tau2": 21.1,
+    "lcr": 2.0,
+    "scicode": 5.2
    }
   },
   "llama3.1:8b": {
@@ -297,7 +406,11 @@
     "hle": 5.1,
     "livecodebench": 11.6,
     "aime25": 4.3,
-    "ifbench": 28.6
+    "ifbench": 28.6,
+    "tau2": 16.4,
+    "terminalbench_hard": 0.8,
+    "lcr": 15.7,
+    "scicode": 13.2
    }
   },
   "llama3.3:70b": {
@@ -309,7 +422,11 @@
     "hle": 3.6,
     "livecodebench": 28.8,
     "aime25": 7.7,
-    "ifbench": 47.1
+    "ifbench": 47.1,
+    "tau2": 26.6,
+    "terminalbench_hard": 3.0,
+    "lcr": 15.7,
+    "scicode": 26.0
    }
   },
   "llama4:scout": {
@@ -322,7 +439,11 @@
     "livecodebench": 29.9,
     "aime25": 14.0,
     "ifbench": 39.5,
-    "mmmu_pro": 52.9
+    "mmmu_pro": 52.9,
+    "tau2": 15.5,
+    "terminalbench_hard": 1.5,
+    "lcr": 27.7,
+    "scicode": 21.3
    }
   },
   "gemma3:1b": {
@@ -334,7 +455,11 @@
     "hle": 5.2,
     "livecodebench": 1.7,
     "aime25": 3.3,
-    "ifbench": 19.9
+    "ifbench": 19.9,
+    "tau2": 10.5,
+    "terminalbench_hard": 0.0,
+    "lcr": 0.0,
+    "scicode": 0.7
    }
   },
   "gemma3:4b": {
@@ -347,7 +472,11 @@
     "livecodebench": 11.2,
     "aime25": 12.7,
     "ifbench": 28.3,
-    "mmmu_pro": 29.9
+    "mmmu_pro": 29.9,
+    "tau2": 5.0,
+    "terminalbench_hard": 0.8,
+    "lcr": 5.7,
+    "scicode": 7.3
    }
   },
   "gemma3:12b": {
@@ -360,7 +489,11 @@
     "livecodebench": 13.7,
     "aime25": 18.3,
     "ifbench": 36.7,
-    "mmmu_pro": 37.5
+    "mmmu_pro": 37.5,
+    "tau2": 10.8,
+    "terminalbench_hard": 0.8,
+    "lcr": 6.7,
+    "scicode": 17.4
    }
   },
   "gemma3:27b": {
@@ -373,7 +506,11 @@
     "livecodebench": 13.7,
     "aime25": 20.7,
     "ifbench": 31.8,
-    "mmmu_pro": 48.0
+    "mmmu_pro": 48.0,
+    "tau2": 10.5,
+    "terminalbench_hard": 3.8,
+    "lcr": 5.7,
+    "scicode": 21.2
    }
   },
   "mistral-small3.2:24b": {
@@ -386,7 +523,11 @@
     "livecodebench": 27.5,
     "aime25": 27.0,
     "ifbench": 33.5,
-    "mmmu_pro": 48.0
+    "mmmu_pro": 48.0,
+    "tau2": 29.5,
+    "terminalbench_hard": 6.8,
+    "lcr": 17.3,
+    "scicode": 26.4
    }
   },
   "ministral-3:3b": {
@@ -399,7 +540,11 @@
     "livecodebench": 24.7,
     "aime25": 22.0,
     "ifbench": 26.8,
-    "mmmu_pro": 38.1
+    "mmmu_pro": 38.1,
+    "tau2": 24.9,
+    "terminalbench_hard": 0,
+    "lcr": 17.0,
+    "scicode": 15.3
    }
   },
   "ministral-3:8b": {
@@ -412,7 +557,11 @@
     "livecodebench": 30.3,
     "aime25": 31.7,
     "ifbench": 29.1,
-    "mmmu_pro": 46.0
+    "mmmu_pro": 46.0,
+    "tau2": 26.6,
+    "terminalbench_hard": 4.5,
+    "lcr": 25.7,
+    "scicode": 20.7
    }
   },
   "ministral-3:14b": {
@@ -425,7 +574,11 @@
     "livecodebench": 35.1,
     "aime25": 30.0,
     "ifbench": 32.0,
-    "mmmu_pro": 49.8
+    "mmmu_pro": 49.8,
+    "tau2": 27.2,
+    "terminalbench_hard": 4.5,
+    "lcr": 26.3,
+    "scicode": 23.8
    }
   },
   "phi4-mini:3.8b": {
@@ -437,7 +590,11 @@
     "hle": 4.5,
     "livecodebench": 12.6,
     "aime25": 6.7,
-    "ifbench": 21.1
+    "ifbench": 21.1,
+    "tau2": 8.2,
+    "terminalbench_hard": 0,
+    "lcr": 15.3,
+    "scicode": 10.8
    }
   },
   "phi4:14b": {
@@ -449,7 +606,11 @@
     "hle": 3.8,
     "livecodebench": 23.1,
     "aime25": 18.0,
-    "ifbench": 23.5
+    "ifbench": 23.5,
+    "tau2": 0,
+    "terminalbench_hard": 3.8,
+    "lcr": 0,
+    "scicode": 26.0
    }
   },
   "lfm2:24b": {
@@ -458,7 +619,11 @@
    "scores": {
     "gpqa": 47.4,
     "hle": 4.2,
-    "ifbench": 45.9
+    "ifbench": 45.9,
+    "tau2": 11.1,
+    "terminalbench_hard": 0,
+    "lcr": 0,
+    "scicode": 10.9
    }
   },
   "glm-4.7-flash": {
@@ -467,7 +632,11 @@
    "scores": {
     "gpqa": 58.1,
     "hle": 7.1,
-    "ifbench": 60.8
+    "ifbench": 60.8,
+    "tau2": 98.8,
+    "terminalbench_hard": 22.0,
+    "lcr": 35.0,
+    "scicode": 33.7
    }
   },
   "nemotron-3-super:120b": {
@@ -476,7 +645,11 @@
    "scores": {
     "gpqa": 80.0,
     "hle": 19.2,
-    "ifbench": 71.5
+    "ifbench": 71.5,
+    "tau2": 67.8,
+    "terminalbench_hard": 28.8,
+    "lcr": 60.0,
+    "scicode": 36.0
    }
   },
   "deepseek-r1:8b": {
@@ -488,7 +661,11 @@
     "hle": 5.6,
     "livecodebench": 51.3,
     "aime25": 63.7,
-    "ifbench": 19.9
+    "ifbench": 19.9,
+    "tau2": 0.0,
+    "terminalbench_hard": 1.5,
+    "lcr": 13.0,
+    "scicode": 20.4
    }
   },
   "deepseek-r1:14b": {
@@ -500,7 +677,9 @@
     "hle": 4.4,
     "livecodebench": 37.6,
     "aime25": 55.7,
-    "ifbench": 22.1
+    "ifbench": 22.1,
+    "lcr": 7.0,
+    "scicode": 23.9
    }
   },
   "deepseek-r1:32b": {
@@ -512,7 +691,9 @@
     "hle": 5.5,
     "livecodebench": 27.0,
     "aime25": 63.0,
-    "ifbench": 22.9
+    "ifbench": 22.9,
+    "lcr": 9.7,
+    "scicode": 37.6
    }
   },
   "deepseek-r1:70b": {
@@ -524,7 +705,11 @@
     "hle": 6.1,
     "livecodebench": 26.6,
     "aime25": 53.7,
-    "ifbench": 27.6
+    "ifbench": 27.6,
+    "tau2": 21.9,
+    "terminalbench_hard": 1.5,
+    "lcr": 11.0,
+    "scicode": 31.2
    }
   },
   "deepseek-r1:671b": {
@@ -536,7 +721,11 @@
     "hle": 14.9,
     "livecodebench": 77.0,
     "aime25": 76.0,
-    "ifbench": 39.6
+    "ifbench": 39.6,
+    "tau2": 36.5,
+    "terminalbench_hard": 15.9,
+    "lcr": 54.7,
+    "scicode": 40.3
    }
   },
   "magistral:24b": {
@@ -548,7 +737,11 @@
     "hle": 7.2,
     "livecodebench": 51.4,
     "aime25": 41.3,
-    "ifbench": 24.8
+    "ifbench": 24.8,
+    "tau2": 26.6,
+    "terminalbench_hard": 4.5,
+    "lcr": 0.0,
+    "scicode": 24.1
    }
   },
   "qwen2.5-coder:7b": {
@@ -558,7 +751,8 @@
     "mmlu_pro": 47.3,
     "gpqa": 33.9,
     "hle": 4.8,
-    "livecodebench": 12.6
+    "livecodebench": 12.6,
+    "scicode": 14.8
    }
   },
   "qwen2.5-coder:32b": {
@@ -568,7 +762,8 @@
     "mmlu_pro": 63.5,
     "gpqa": 41.7,
     "hle": 3.8,
-    "livecodebench": 29.5
+    "livecodebench": 29.5,
+    "scicode": 27.1
    }
   },
   "qwen3-coder:30b": {
@@ -580,7 +775,11 @@
     "hle": 4.0,
     "livecodebench": 40.3,
     "aime25": 29.0,
-    "ifbench": 32.7
+    "ifbench": 32.7,
+    "tau2": 34.5,
+    "terminalbench_hard": 15.2,
+    "lcr": 29.0,
+    "scicode": 27.8
    }
   },
   "qwen3-coder-next": {
@@ -589,7 +788,11 @@
    "scores": {
     "gpqa": 73.7,
     "hle": 10.1,
-    "ifbench": 35.2
+    "ifbench": 35.2,
+    "tau2": 79.5,
+    "terminalbench_hard": 18.2,
+    "lcr": 47.0,
+    "scicode": 36.2
    }
   },
   "qwen3.6:27b": {
@@ -599,7 +802,11 @@
     "gpqa": 84.2,
     "hle": 21.6,
     "ifbench": 67.6,
-    "mmmu_pro": 74.6
+    "mmmu_pro": 74.6,
+    "tau2": 94.2,
+    "terminalbench_hard": 34.8,
+    "lcr": 68.7,
+    "scicode": 39.8
    }
   },
   "qwen3.6:35b": {
@@ -609,7 +816,11 @@
     "gpqa": 84.1,
     "hle": 22.2,
     "ifbench": 64.4,
-    "mmmu_pro": 75.0
+    "mmmu_pro": 75.0,
+    "tau2": 95.3,
+    "terminalbench_hard": 34.8,
+    "lcr": 71.7,
+    "scicode": 36.6
    }
   },
   "devstral-small-2:24b": {
@@ -622,7 +833,11 @@
     "livecodebench": 34.8,
     "aime25": 34.3,
     "ifbench": 31.2,
-    "mmmu_pro": 44.6
+    "mmmu_pro": 44.6,
+    "tau2": 23.4,
+    "terminalbench_hard": 16.7,
+    "lcr": 24.0,
+    "scicode": 28.8
    }
   },
   "qwen3-vl:4b": {
@@ -635,7 +850,11 @@
     "livecodebench": 32.0,
     "aime25": 25.7,
     "ifbench": 36.6,
-    "mmmu_pro": 52.0
+    "mmmu_pro": 52.0,
+    "tau2": 15.5,
+    "terminalbench_hard": 1.5,
+    "lcr": 21.3,
+    "scicode": 17.1
    }
   },
   "qwen3-vl:8b": {
@@ -648,7 +867,11 @@
     "livecodebench": 35.3,
     "aime25": 30.7,
     "ifbench": 39.9,
-    "mmmu_pro": 56.6
+    "mmmu_pro": 56.6,
+    "tau2": 22.5,
+    "terminalbench_hard": 3.8,
+    "lcr": 31.0,
+    "scicode": 21.9
    }
   },
   "qwen3-vl:30b": {
@@ -661,7 +884,11 @@
     "livecodebench": 69.7,
     "aime25": 82.3,
     "ifbench": 45.1,
-    "mmmu_pro": 61.8
+    "mmmu_pro": 61.8,
+    "tau2": 19.9,
+    "terminalbench_hard": 5.3,
+    "lcr": 40.7,
+    "scicode": 28.8
    }
   },
   "qwen3-vl:32b": {
@@ -674,7 +901,11 @@
     "livecodebench": 73.8,
     "aime25": 84.7,
     "ifbench": 59.4,
-    "mmmu_pro": 63.4
+    "mmmu_pro": 63.4,
+    "tau2": 45.6,
+    "terminalbench_hard": 7.6,
+    "lcr": 55.3,
+    "scicode": 28.5
    }
   },
   "llama3.2-vision:11b": {
@@ -687,7 +918,11 @@
     "livecodebench": 11.0,
     "aime25": 1.7,
     "ifbench": 30.4,
-    "mmmu_pro": 29.3
+    "mmmu_pro": 29.3,
+    "tau2": 14.6,
+    "terminalbench_hard": 0.8,
+    "lcr": 12.7,
+    "scicode": 11.2
    }
   },
   "gemma3n:e2b": {
@@ -699,7 +934,11 @@
     "hle": 4.0,
     "livecodebench": 9.5,
     "aime25": 10.3,
-    "ifbench": 22.0
+    "ifbench": 22.0,
+    "tau2": 0.0,
+    "terminalbench_hard": 0.8,
+    "lcr": 0.0,
+    "scicode": 5.2
    }
   },
   "gemma3n:e4b": {
@@ -712,7 +951,11 @@
     "livecodebench": 14.6,
     "aime25": 14.3,
     "ifbench": 27.9,
-    "mmmu_pro": 26.2
+    "mmmu_pro": 26.2,
+    "tau2": 5.0,
+    "terminalbench_hard": 2.3,
+    "lcr": 0.0,
+    "scicode": 8.1
    }
   },
   "gemma3:270m": {
@@ -724,7 +967,11 @@
     "hle": 3.6,
     "livecodebench": 0.3,
     "aime25": 2.3,
-    "ifbench": 12.1
+    "ifbench": 12.1,
+    "tau2": 9.1,
+    "terminalbench_hard": 0,
+    "lcr": 0,
+    "scicode": 0.0
    }
   },
   "qwen3-vl:235b": {
@@ -737,7 +984,11 @@
     "livecodebench": 64.6,
     "aime25": 88.3,
     "ifbench": 56.5,
-    "mmmu_pro": 68.7
+    "mmmu_pro": 68.7,
+    "tau2": 54.1,
+    "terminalbench_hard": 11.4,
+    "lcr": 58.7,
+    "scicode": 39.9
    }
   },
   "qwen3-next:80b": {
@@ -749,7 +1000,11 @@
     "hle": 12.6,
     "livecodebench": 78.4,
     "aime25": 84.3,
-    "ifbench": 60.7
+    "ifbench": 60.7,
+    "tau2": 41.5,
+    "terminalbench_hard": 9.8,
+    "lcr": 63.7,
+    "scicode": 38.8
    }
   },
   "lfm2.5-thinking:1.2b": {
@@ -758,7 +1013,11 @@
    "scores": {
     "gpqa": 33.9,
     "hle": 6.2,
-    "ifbench": 41.8
+    "ifbench": 41.8,
+    "tau2": 19.6,
+    "terminalbench_hard": 0,
+    "lcr": 0,
+    "scicode": 4.2
    }
   },
   "nemotron-3-nano:4b": {
@@ -767,7 +1026,11 @@
    "scores": {
     "gpqa": 51.3,
     "hle": 4.9,
-    "ifbench": 58.2
+    "ifbench": 58.2,
+    "tau2": 28.1,
+    "terminalbench_hard": 6.8,
+    "lcr": 21.7,
+    "scicode": 16.1
    }
   },
   "nemotron-3-nano:30b": {
@@ -779,7 +1042,11 @@
     "hle": 11.4,
     "livecodebench": 74.1,
     "aime25": 91.0,
-    "ifbench": 71.1
+    "ifbench": 71.1,
+    "tau2": 40.9,
+    "terminalbench_hard": 13.6,
+    "lcr": 38.0,
+    "scicode": 30.6
    }
   },
   "nemotron-3.5-lightning:30b": {
@@ -787,7 +1054,9 @@
    "url": "https://artificialanalysis.ai/models/nemotron-3-5-lightning",
    "scores": {
     "gpqa": 74.3,
-    "hle": 10.6
+    "hle": 10.6,
+    "lcr": 60.3,
+    "scicode": 32.1
    }
   },
   "granite4.1:3b": {
@@ -796,7 +1065,11 @@
    "scores": {
     "gpqa": 31.4,
     "hle": 3.4,
-    "ifbench": 33.7
+    "ifbench": 33.7,
+    "tau2": 19.6,
+    "terminalbench_hard": 2.3,
+    "lcr": 3.0,
+    "scicode": 11.9
    }
   },
   "granite4.1:8b": {
@@ -805,7 +1078,11 @@
    "scores": {
     "gpqa": 43.3,
     "hle": 3.8,
-    "ifbench": 38.6
+    "ifbench": 38.6,
+    "tau2": 27.8,
+    "terminalbench_hard": 0.0,
+    "lcr": 12.0,
+    "scicode": 21.8
    }
   },
   "granite4.1:30b": {
@@ -814,7 +1091,11 @@
    "scores": {
     "gpqa": 48.1,
     "hle": 4.2,
-    "ifbench": 44.4
+    "ifbench": 44.4,
+    "tau2": 42.1,
+    "terminalbench_hard": 2.3,
+    "lcr": 18.7,
+    "scicode": 25.8
    }
   },
   "deepseek-ocr:3b": {
@@ -833,7 +1114,9 @@
    "url": "https://artificialanalysis.ai/models/claude-opus-5-5",
    "scores": {
     "hle": 61.4,
-    "mmmu_pro": 87.7
+    "mmmu_pro": 87.7,
+    "lcr": 84.7,
+    "scicode": 66.9
    }
   },
   {
@@ -843,7 +1126,9 @@
    "url": "https://artificialanalysis.ai/models/claude-fable-5-1",
    "scores": {
     "gpqa": 93.7,
-    "hle": 59.1
+    "hle": 59.1,
+    "lcr": 85.3,
+    "scicode": 63.1
    }
   },
   {
@@ -852,7 +1137,9 @@
    "aa_name": "Claude Sonnet 5.5 (Max, Default Fallback)",
    "url": "https://artificialanalysis.ai/models/claude-sonnet-5-5",
    "scores": {
-    "hle": 55.0
+    "hle": 55.0,
+    "lcr": 82.7,
+    "scicode": 61.0
    }
   },
   {
@@ -861,7 +1148,9 @@
    "aa_name": "Claude Haiku 5.5 (Max)",
    "url": "https://artificialanalysis.ai/models/claude-haiku-5-5",
    "scores": {
-    "hle": 44.4
+    "hle": 44.4,
+    "lcr": 82.7,
+    "scicode": 55.0
    }
   },
   {
@@ -872,7 +1161,9 @@
    "scores": {
     "gpqa": 96.1,
     "hle": 54.7,
-    "mmmu_pro": 86.9
+    "mmmu_pro": 86.9,
+    "lcr": 80.7,
+    "scicode": 56.5
    }
   },
   {
@@ -882,7 +1173,9 @@
    "url": "https://artificialanalysis.ai/models/gpt-6-1-sol",
    "scores": {
     "hle": 52.9,
-    "mmmu_pro": 86.0
+    "mmmu_pro": 86.0,
+    "lcr": 83.0,
+    "scicode": 54.2
    }
   },
   {
@@ -892,7 +1185,9 @@
    "url": "https://artificialanalysis.ai/models/gpt-6-1-terra",
    "scores": {
     "hle": 46.2,
-    "mmmu_pro": 84.7
+    "mmmu_pro": 84.7,
+    "lcr": 82.7,
+    "scicode": 55.1
    }
   },
   {
@@ -902,7 +1197,9 @@
    "url": "https://artificialanalysis.ai/models/gpt-6-luna",
    "scores": {
     "hle": 38.5,
-    "mmmu_pro": 79.7
+    "mmmu_pro": 79.7,
+    "lcr": 83.3,
+    "scicode": 54.6
    }
   },
   {
@@ -911,7 +1208,9 @@
    "aa_name": "Gemini 4 Argon (High)",
    "url": "https://artificialanalysis.ai/models/gemini-4-argon",
    "scores": {
-    "hle": 57.1
+    "hle": 57.1,
+    "lcr": 79.7,
+    "scicode": 61.8
    }
   },
   {
@@ -923,7 +1222,11 @@
     "gpqa": 94.1,
     "hle": 47.0,
     "ifbench": 77.1,
-    "mmmu_pro": 82.4
+    "mmmu_pro": 82.4,
+    "tau2": 95.6,
+    "terminalbench_hard": 53.8,
+    "lcr": 82.0,
+    "scicode": 58.7
    }
   },
   {
@@ -934,7 +1237,9 @@
    "scores": {
     "gpqa": 95.3,
     "hle": 47.8,
-    "mmmu_pro": 85.6
+    "mmmu_pro": 85.6,
+    "lcr": 81.3,
+    "scicode": 56.6
    }
   },
   {
@@ -943,7 +1248,9 @@
    "aa_name": "Grok 4.7 (Xhigh)",
    "url": "https://artificialanalysis.ai/models/grok-4-7",
    "scores": {
-    "hle": 43.1
+    "hle": 43.1,
+    "lcr": 76.7,
+    "scicode": 57.4
    }
   },
   {
@@ -958,7 +1265,11 @@
     "livecodebench": 84.6,
     "aime25": 94.3,
     "ifbench": 73.1,
-    "mmmu_pro": 74.2
+    "mmmu_pro": 74.2,
+    "tau2": 84.8,
+    "terminalbench_hard": 32.6,
+    "lcr": 75.6,
+    "scicode": 42.9
    }
   },
   {
@@ -973,7 +1284,11 @@
     "livecodebench": 80.8,
     "aime25": 88.3,
     "ifbench": 71.4,
-    "mmmu_pro": 70.1
+    "mmmu_pro": 70.1,
+    "tau2": 80.7,
+    "terminalbench_hard": 37.1,
+    "lcr": 74.7,
+    "scicode": 41.0
    }
   },
   {
@@ -987,7 +1302,11 @@
     "hle": 3.3,
     "livecodebench": 30.9,
     "aime25": 6.0,
-    "ifbench": 34.3
+    "ifbench": 34.3,
+    "tau2": 25.1,
+    "terminalbench_hard": 8.3,
+    "lcr": 0.0,
+    "scicode": 33.3
    }
   },
   {
@@ -1002,7 +1321,8 @@
     "livecodebench": 23.4,
     "aime25": 14.7,
     "ifbench": 31.0,
-    "mmmu_pro": 41.5
+    "mmmu_pro": 41.5,
+    "scicode": 22.9
    }
   },
   {
@@ -1017,7 +1337,11 @@
     "livecodebench": 65.5,
     "aime25": 74.3,
     "ifbench": 54.7,
-    "mmmu_pro": 61.8
+    "mmmu_pro": 61.8,
+    "tau2": 64.6,
+    "terminalbench_hard": 31.1,
+    "lcr": 64.7,
+    "scicode": 40.0
    }
   },
   {
@@ -1029,7 +1353,8 @@
     "mmlu_pro": 77.2,
     "gpqa": 59.9,
     "hle": 3.9,
-    "livecodebench": 38.1
+    "livecodebench": 38.1,
+    "scicode": 36.6
    }
   },
   {
@@ -1044,7 +1369,11 @@
     "livecodebench": 80.1,
     "aime25": 87.7,
     "ifbench": 48.7,
-    "mmmu_pro": 74.9
+    "mmmu_pro": 74.9,
+    "tau2": 54.1,
+    "terminalbench_hard": 26.5,
+    "lcr": 66.0,
+    "scicode": 42.8
    }
   },
   {
@@ -1059,7 +1388,11 @@
     "livecodebench": 69.5,
     "aime25": 73.3,
     "ifbench": 50.3,
-    "mmmu_pro": 69.1
+    "mmmu_pro": 69.1,
+    "tau2": 31.6,
+    "terminalbench_hard": 13.6,
+    "lcr": 61.7,
+    "scicode": 39.4
    }
   }
  ]

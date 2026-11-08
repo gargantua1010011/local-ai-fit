@@ -29,6 +29,10 @@ BENCHMARKS = [
     ("aime25", "AIME 2025", "고등 수학 경시대회", "aime-2025", "aime25"),
     ("ifbench", "IFBench", "지시를 정확히 따르기", "ifbench", "ifbench"),
     ("mmmu_pro", "MMMU-Pro", "이미지를 보고 푸는 문제(비전 모델만)", "mmmu-pro", "mmmu_pro"),
+    ("tau2", "τ²-Bench", "도구를 불러 가며 고객 상담 업무 처리(에이전트)", "tau2-bench", "tau2"),
+    ("terminalbench_hard", "Terminal-Bench Hard", "터미널에서 직접 명령을 실행하는 코딩 에이전트 작업", "terminalbench-hard", "terminalbench_hard"),
+    ("lcr", "AA-LCR", "긴 문서 여러 개를 읽고 답하기(약 10만 토큰)", "artificial-analysis-long-context-reasoning", "lcr"),
+    ("scicode", "SciCode", "과학 계산 코드 작성", "scicode", "scicode"),
 ]
 
 # Ollama 태그 → AA 모델 slug. 생각(reasoning) 모드가 기본인 모델은 reasoning 쪽 점수를 쓴다.
@@ -165,7 +169,7 @@ def parse_new(h):
 def parse_mid(h):
     """2026-06~08 형식: {"id":..,"name":..,"slug":..,"gpqa":0.8,"mmmuPro":..,"isOpenWeights":true,..}"""
     out = {}
-    keys = {"mmlu_pro": "mmluPro", "mmmu_pro": "mmmuPro"}
+    keys = {"mmlu_pro": "mmluPro", "mmmu_pro": "mmmuPro", "terminalbench_hard": "terminalbenchHard"}
     for chunk in h.split('{"id":"')[1:]:
         if '"intelligenceIndex"' not in chunk:
             continue
