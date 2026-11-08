@@ -37,7 +37,7 @@ struct App {
     status: String,
     tab: Tab,
     bench: Benchmarks,
-    /// 비교 탭에서 고른 모델 태그(고른 순서 = 막대 색 순서)
+    /// 비교 탭에서 고른 모델(로컬은 태그, 상용은 이름. 고른 순서 = 막대 색 순서)
     picked: Vec<String>,
     search: String,
     only_fit: bool,
@@ -68,7 +68,7 @@ impl App {
         app
     }
 
-    /// 처음 비교 탭에 보여줄 모델: GPU에 전부 올라가는 점수 있는 모델 중 큰 것 3개
+    /// 처음 비교 탭에 보여줄 모델: GPU에 전부 올라가는 점수 있는 모델 중 큰 것 3개 + 기준으로 GPT-4o
     fn default_picks(&self) -> Vec<String> {
         let sys = self.sys();
         let mut cands: Vec<&Model> = self
@@ -77,7 +77,18 @@ impl App {
             .filter(|m| self.bench.models.contains_key(&m.tag) && fit(m, &sys) == Fit::Gpu)
             .collect();
         cands.sort_by(|a, b| b.size.total_cmp(&a.size));
-        cands.into_iter().take(3).map(|m| m.tag.clone()).collect()
+        let mut picks: Vec<String> = cands.into_iter().take(3).map(|m| m.tag.clone()).collect();
+        picks.extend(self.bench.commercial.iter().filter(|c| c.name == "GPT-4o").map(|c| c.name.clone()));
+        picks
+    }
+
+    /// 고른 이름으로 점수와 실행 방식(로컬이면 Some(판정), 상용이면 None)을 찾는다
+    fn lookup(&self, name: &str, sys: &Sys) -> Option<(&BenchModel, Option<Fit>)> {
+        if let Some(c) = self.bench.commercial.iter().find(|c| c.name == name) {
+            return Some((&c.bench, None));
+        }
+        let m = self.models.iter().find(|m| m.tag == name)?;
+        Some((self.bench.models.get(name)?, Some(fit(m, sys))))
     }
 
     /// 화면에서 고친 RAM·VRAM을 반영한 사양
@@ -276,7 +287,11 @@ impl App {
                     self.picked = self.default_picks();
                 }
             });
-            ui.weak(format!("벤치마크 점수가 있는 모델만 보여요({}개).", self.bench.models.len()));
+            ui.weak(format!(
+                "벤치마크 점수가 있는 모델만 보여요(로컬 {}개). 맨 아래에 비교용 상용 모델 {}개가 있어요.",
+                self.bench.models.len(),
+                self.bench.commercial.len()
+            ));
             ui.separator();
 
             let q = self.search.to_lowercase();
@@ -296,23 +311,21 @@ impl App {
                     ui.add_space(4.0);
                     ui.weak(cat);
                     for (m, f) in list {
-                        let pos = self.picked.iter().position(|t| t == &m.tag);
-                        let mut on = pos.is_some();
-                        let full = self.picked.len() >= MAX_PICK && !on;
-                        ui.horizontal(|ui| {
-                            let check = egui::Checkbox::new(&mut on, RichText::new(&m.tag).monospace());
-                            let resp = ui.add_enabled(!full, check);
-                            if resp.changed() {
-                                toggle = Some(m.tag.clone());
-                            }
-                            if full {
-                                resp.on_disabled_hover_text(format!("한 번에 {MAX_PICK}개까지 비교할 수 있어요"));
-                            }
-                            if let Some(i) = pos {
-                                swatch(ui, PICK_COLORS[i]);
-                            }
-                            ui.label(RichText::new(f.label()).small().color(fit_color(f)));
-                        });
+                        let note = RichText::new(f.label()).small().color(fit_color(f));
+                        pick_row(ui, &self.picked, &m.tag, RichText::new(&m.tag).monospace(), note, &mut toggle);
+                    }
+                }
+                for group in ["최신", "예전 참고"] {
+                    let list: Vec<&CommercialModel> =
+                        self.bench.commercial.iter().filter(|c| c.group == group && c.name.to_lowercase().contains(&q)).collect();
+                    if list.is_empty() {
+                        continue;
+                    }
+                    ui.add_space(4.0);
+                    ui.weak(format!("상용 모델 · {group}"));
+                    for c in list {
+                        let note = RichText::new("클라우드").small().weak();
+                        pick_row(ui, &self.picked, &c.name, RichText::new(&c.name), note, &mut toggle);
                     }
                 }
             });
@@ -327,12 +340,12 @@ impl App {
         });
 
         egui::CentralPanel::default_margins().show(ui, |ui| {
-            let picks: Vec<(usize, &Model, &BenchModel, Fit)> = self
+            let picks: Vec<(usize, &str, &BenchModel, Option<Fit>)> = self
                 .picked
                 .iter()
-                .filter_map(|t| Some((self.models.iter().find(|m| &m.tag == t)?, self.bench.models.get(t)?)))
+                .filter_map(|t| Some((t.as_str(), self.lookup(t, sys)?)))
                 .enumerate()
-                .map(|(i, (m, b))| (i, m, b, fit(m, sys)))
+                .map(|(i, (name, (b, f)))| (i, name, b, f))
                 .collect();
             if picks.is_empty() {
                 ui.label("왼쪽에서 비교할 모델을 골라 주세요.");
@@ -343,6 +356,9 @@ impl App {
                 self.bench.source, self.bench.updated
             ));
             ui.weak("모델마다 측정된 벤치마크가 달라서 빈 칸이 있어요. 모델 이름을 누르면 출처 페이지가 열려요.");
+            if picks.iter().any(|p| p.3.is_none()) {
+                ui.weak("상용 모델은 생각 수준을 고를 수 있으면 가장 높은 설정으로 잰 점수예요. 최신 상용 모델은 공개된 벤치마크가 적어요.");
+            }
             ui.add_space(8.0);
 
             let benches = &self.bench.benchmarks;
@@ -355,11 +371,14 @@ impl App {
                         ui.strong(&b.name).on_hover_text(&b.desc);
                     }
                     ui.end_row();
-                    for (i, m, bm, f) in &picks {
+                    for (i, name, bm, f) in &picks {
                         swatch(ui, PICK_COLORS[*i]);
-                        ui.hyperlink_to(RichText::new(&m.tag).monospace(), &bm.url)
-                            .on_hover_text(format!("Artificial Analysis 기준 모델: {}", bm.aa_name));
-                        ui.label(RichText::new(f.label()).color(fit_color(*f)));
+                        let text = if f.is_some() { RichText::new(*name).monospace() } else { RichText::new(*name) };
+                        ui.hyperlink_to(text, &bm.url).on_hover_text(format!("Artificial Analysis 기준 모델: {}", bm.aa_name));
+                        match f {
+                            Some(f) => ui.label(RichText::new(f.label()).color(fit_color(*f))),
+                            None => ui.weak("클라우드(상용)"),
+                        };
                         for b in benches {
                             let top = picks.iter().filter_map(|p| p.2.scores.get(&b.key)).copied().fold(f64::MIN, f64::max);
                             match bm.scores.get(&b.key) {
@@ -386,11 +405,12 @@ impl App {
                         ui.strong(&b.name);
                         ui.weak(&b.desc);
                     });
-                    for (i, m, bm, _) in &picks {
+                    for (i, name, bm, f) in &picks {
                         ui.horizontal(|ui| {
                             ui.allocate_ui_with_layout(egui::vec2(190.0, 18.0), egui::Layout::left_to_right(egui::Align::Center), |ui| {
                                 ui.set_min_width(190.0);
-                                ui.add(egui::Label::new(RichText::new(&m.tag).monospace()).truncate());
+                                let text = if f.is_some() { RichText::new(*name).monospace() } else { RichText::new(*name) };
+                                ui.add(egui::Label::new(text).truncate());
                             });
                             let w = (ui.available_width() - 70.0).max(60.0);
                             let (rect, _) = ui.allocate_exact_size(egui::vec2(w, 16.0), egui::Sense::hover());
@@ -412,6 +432,26 @@ impl App {
             });
         });
     }
+}
+
+/// 비교 탭 왼쪽 목록의 한 줄: 체크박스, 고른 색, 실행 방식
+fn pick_row(ui: &mut egui::Ui, picked: &[String], name: &str, text: RichText, note: RichText, toggle: &mut Option<String>) {
+    let pos = picked.iter().position(|t| t == name);
+    let mut on = pos.is_some();
+    let full = picked.len() >= MAX_PICK && !on;
+    ui.horizontal(|ui| {
+        let resp = ui.add_enabled(!full, egui::Checkbox::new(&mut on, text));
+        if resp.changed() {
+            *toggle = Some(name.to_string());
+        }
+        if full {
+            resp.on_disabled_hover_text(format!("한 번에 {MAX_PICK}개까지 비교할 수 있어요"));
+        }
+        if let Some(i) = pos {
+            swatch(ui, PICK_COLORS[i]);
+        }
+        ui.label(note);
+    });
 }
 
 /// 고른 모델의 색 표시(작은 네모)

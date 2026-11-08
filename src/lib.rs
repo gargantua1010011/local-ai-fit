@@ -303,6 +303,18 @@ pub struct Benchmarks {
     pub updated: String,
     pub benchmarks: Vec<Bench>,
     pub models: std::collections::HashMap<String, BenchModel>,
+    /// 비교용 상용(클라우드) 모델
+    #[serde(default)]
+    pub commercial: Vec<CommercialModel>,
+}
+
+#[derive(Deserialize)]
+pub struct CommercialModel {
+    pub name: String,
+    /// "최신" / "예전 참고"
+    pub group: String,
+    #[serde(flatten)]
+    pub bench: BenchModel,
 }
 
 pub fn load_benchmarks() -> Benchmarks {

@@ -1,5 +1,5 @@
 """benchmarks.json 만들기: Artificial Analysis(artificialanalysis.ai) 리더보드에 실린 오픈 모델 점수를
-models.json의 Ollama 태그에 맞춰 모은다.
+models.json의 Ollama 태그에 맞춰 모으고, 비교용 상용 모델(COMMERCIAL) 점수도 함께 넣는다.
 
 - 현재 페이지엔 지원 종료(deprecated) 모델이 빠져 있어서, Wayback Machine에 남은 예전 페이지로 채운다.
   벤치마크마다 가장 최근 페이지의 값을 쓴다. 모두 같은 곳(AA)이 같은 방식으로 직접 측정한 값이다.
@@ -11,6 +11,8 @@ import gzip
 import json
 import re
 import sys
+import time
+import urllib.error
 import urllib.request
 from pathlib import Path
 
@@ -92,11 +94,42 @@ MAPPING = {
     "llama3.2-vision:11b": "llama-3-2-instruct-11b-vision",
 }
 
+# 비교용 상용(클라우드) 모델: (묶음, 화면에 보일 이름, AA slug). 생각 수준을 고를 수 있는 모델은 가장 높은 설정.
+COMMERCIAL = [
+    ("최신", "Claude Opus 5.5", "claude-opus-5-5"),
+    ("최신", "Claude Fable 5.1", "claude-fable-5-1"),
+    ("최신", "Claude Sonnet 5.5", "claude-sonnet-5-5"),
+    ("최신", "Claude Haiku 5.5", "claude-haiku-5-5"),
+    ("최신", "GPT-6 Astra", "gpt-6-astra"),
+    ("최신", "GPT-6.1 Sol", "gpt-6-1-sol"),
+    ("최신", "GPT-6.1 Terra", "gpt-6-1-terra"),
+    ("최신", "GPT-6 Luna", "gpt-6-luna"),
+    ("최신", "Gemini 4 Argon", "gemini-4-argon"),
+    ("최신", "Gemini 3.1 Pro", "gemini-3-1-pro-preview"),
+    ("최신", "Gemini 3.8 Flash", "gemini-3-8-flash"),
+    ("최신", "Grok 4.7", "grok-4-7"),
+    ("예전 참고", "GPT-5", "gpt-5"),
+    ("예전 참고", "o3", "o3"),
+    ("예전 참고", "GPT-4o", "gpt-4o"),
+    ("예전 참고", "GPT-4o mini", "gpt-4o-mini"),
+    ("예전 참고", "Claude 4 Sonnet", "claude-4-sonnet-thinking"),
+    ("예전 참고", "Claude 3.5 Sonnet", "claude-35-sonnet"),
+    ("예전 참고", "Gemini 2.5 Pro", "gemini-2-5-pro"),
+    ("예전 참고", "Gemini 2.5 Flash", "gemini-2-5-flash-reasoning"),
+]
+
 
 def fetch(url):
     req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0", "Accept-Encoding": "gzip"})
-    with urllib.request.urlopen(req, timeout=180) as r:
-        data = r.read()
+    for wait in (20, 60, None):  # Wayback은 연달아 받으면 429(요청 과다)를 준다
+        try:
+            with urllib.request.urlopen(req, timeout=180) as r:
+                data = r.read()
+            break
+        except urllib.error.HTTPError as e:
+            if e.code != 429 or wait is None:
+                raise
+            time.sleep(wait)
     if data[:2] == b"\x1f\x8b":
         data = gzip.decompress(data)
     return data.decode("utf-8", "ignore").replace('\\"', '"')
@@ -105,7 +138,7 @@ def fetch(url):
 def parse_new(h):
     """2026-06 이후 형식: {"slug":..,"name":..,...,"scores":{"gpqa-diamond":0.8,...}}"""
     out = {}
-    pat = r'\{"slug":"([^"]+)","name":"([^"]+)"[^{}]*?"isOpenWeights":true[^{}]*?"scores":\{([^{}]*)\}'
+    pat = r'\{"slug":"([^"]+)","name":"([^"]+)"[^{}]*?"scores":\{([^{}]*)\}'
     for slug, name, scores in re.findall(pat, h):
         try:
             s = json.loads("{" + scores + "}")
@@ -120,7 +153,7 @@ def parse_mid(h):
     out = {}
     keys = {"mmlu_pro": "mmluPro", "mmmu_pro": "mmmuPro"}
     for chunk in h.split('{"id":"')[1:]:
-        if '"isOpenWeights":true' not in chunk or '"intelligenceIndex"' not in chunk:
+        if '"intelligenceIndex"' not in chunk:
             continue
         slug = re.search(r'"slug":"([^"]+)"', chunk)
         name = re.search(r'"name":"([^"]+)"', chunk)
@@ -146,7 +179,7 @@ def parse_old(h):
             return json.loads(m.group(1)) if m else None
 
         slug = get("slug")
-        if not slug or get("open_weights") == "Proprietary":
+        if not slug:
             continue
         out[slug] = (get("name"), {k: get(old) for k, _, _, _, old in BENCHMARKS if isinstance(get(old), (int, float))})
     return out
@@ -163,12 +196,13 @@ def main():
             print(f"{label}: 받지 못함({e})", file=sys.stderr)
             continue
         data = parse_new(h) or parse_mid(h) or parse_old(h)
-        print(f"{label}: 오픈 모델 {len(data)}개")
+        print(f"{label}: 모델 {len(data)}개")
         snapshots.append(data)
 
-    models = {}
-    missing = []
-    for tag, slug in MAPPING.items():
+    order = [b[0] for b in BENCHMARKS]
+
+    def collect(slug):
+        """여러 페이지에서 벤치마크마다 가장 최근 값을 모은다. 없으면 None."""
         name, scores = None, {}
         for snap in snapshots:
             if slug in snap:
@@ -177,24 +211,28 @@ def main():
                 for k, v in s.items():
                     scores.setdefault(k, round(v * 100, 1))
         if not scores:
-            missing.append(f"{tag} ({slug})")
-            continue
-        order = [b[0] for b in BENCHMARKS]
-        models[tag] = {
+            missing.append(slug)
+            return None
+        return {
             "aa_name": name,
             "url": f"https://artificialanalysis.ai/models/{slug}",
             "scores": dict(sorted(scores.items(), key=lambda kv: order.index(kv[0]))),
         }
 
+    missing = []
+    models = {tag: e for tag, slug in MAPPING.items() if (e := collect(slug))}
+    commercial = [{"name": n, "group": g, **e} for g, n, slug in COMMERCIAL if (e := collect(slug))]
+
     out = {
-        "source": "Artificial Analysis (artificialanalysis.ai) 독립 측정값, 원본 정밀도 기준",
+        "source": "Artificial Analysis (artificialanalysis.ai) 독립 측정값",
         "updated": datetime.date.today().isoformat(),
         "benchmarks": [{"key": k, "name": n, "desc": d} for k, n, d, _, _ in BENCHMARKS],
         "models": models,
+        "commercial": commercial,
     }
     path = root / "benchmarks.json"
     path.write_text(json.dumps(out, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
-    print(f"{path}: {len(models)}개 모델")
+    print(f"{path}: 로컬 {len(models)}개, 상용 {len(commercial)}개")
     if missing:
         print("점수를 찾지 못한 모델:", ", ".join(missing))
 

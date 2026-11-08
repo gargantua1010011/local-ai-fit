@@ -1,5 +1,5 @@
 {
- "source": "Artificial Analysis (artificialanalysis.ai) 독립 측정값, 원본 정밀도 기준",
+ "source": "Artificial Analysis (artificialanalysis.ai) 독립 측정값",
  "updated": "2026-11-08",
  "benchmarks": [
   {
@@ -690,5 +690,243 @@
     "mmmu_pro": 29.3
    }
   }
- }
+ },
+ "commercial": [
+  {
+   "name": "Claude Opus 5.5",
+   "group": "최신",
+   "aa_name": "Claude Opus 5.5 (Max, Default Fallback)",
+   "url": "https://artificialanalysis.ai/models/claude-opus-5-5",
+   "scores": {
+    "hle": 61.4,
+    "mmmu_pro": 87.7
+   }
+  },
+  {
+   "name": "Claude Fable 5.1",
+   "group": "최신",
+   "aa_name": "Claude Fable 5.1 (Max, Default Fallback)",
+   "url": "https://artificialanalysis.ai/models/claude-fable-5-1",
+   "scores": {
+    "gpqa": 93.7,
+    "hle": 59.1
+   }
+  },
+  {
+   "name": "Claude Sonnet 5.5",
+   "group": "최신",
+   "aa_name": "Claude Sonnet 5.5 (Max, Default Fallback)",
+   "url": "https://artificialanalysis.ai/models/claude-sonnet-5-5",
+   "scores": {
+    "hle": 55.0
+   }
+  },
+  {
+   "name": "Claude Haiku 5.5",
+   "group": "최신",
+   "aa_name": "Claude Haiku 5.5 (Max)",
+   "url": "https://artificialanalysis.ai/models/claude-haiku-5-5",
+   "scores": {
+    "hle": 44.4
+   }
+  },
+  {
+   "name": "GPT-6 Astra",
+   "group": "최신",
+   "aa_name": "GPT-6 Astra (Max)",
+   "url": "https://artificialanalysis.ai/models/gpt-6-astra",
+   "scores": {
+    "gpqa": 96.1,
+    "hle": 54.7,
+    "mmmu_pro": 86.9
+   }
+  },
+  {
+   "name": "GPT-6.1 Sol",
+   "group": "최신",
+   "aa_name": "GPT-6.1 Sol (Max)",
+   "url": "https://artificialanalysis.ai/models/gpt-6-1-sol",
+   "scores": {
+    "hle": 52.9,
+    "mmmu_pro": 86.0
+   }
+  },
+  {
+   "name": "GPT-6.1 Terra",
+   "group": "최신",
+   "aa_name": "GPT-6.1 Terra (Max)",
+   "url": "https://artificialanalysis.ai/models/gpt-6-1-terra",
+   "scores": {
+    "hle": 46.2,
+    "mmmu_pro": 84.7
+   }
+  },
+  {
+   "name": "GPT-6 Luna",
+   "group": "최신",
+   "aa_name": "GPT-6 Luna (Max)",
+   "url": "https://artificialanalysis.ai/models/gpt-6-luna",
+   "scores": {
+    "hle": 38.5,
+    "mmmu_pro": 79.7
+   }
+  },
+  {
+   "name": "Gemini 4 Argon",
+   "group": "최신",
+   "aa_name": "Gemini 4 Argon (High)",
+   "url": "https://artificialanalysis.ai/models/gemini-4-argon",
+   "scores": {
+    "hle": 57.1
+   }
+  },
+  {
+   "name": "Gemini 3.1 Pro",
+   "group": "최신",
+   "aa_name": "Gemini 3.1 Pro Preview",
+   "url": "https://artificialanalysis.ai/models/gemini-3-1-pro-preview",
+   "scores": {
+    "gpqa": 94.1,
+    "hle": 47.0,
+    "ifbench": 77.1,
+    "mmmu_pro": 82.4
+   }
+  },
+  {
+   "name": "Gemini 3.8 Flash",
+   "group": "최신",
+   "aa_name": "Gemini 3.8 Flash (High)",
+   "url": "https://artificialanalysis.ai/models/gemini-3-8-flash",
+   "scores": {
+    "gpqa": 95.3,
+    "hle": 47.8,
+    "mmmu_pro": 85.6
+   }
+  },
+  {
+   "name": "Grok 4.7",
+   "group": "최신",
+   "aa_name": "Grok 4.7 (Xhigh)",
+   "url": "https://artificialanalysis.ai/models/grok-4-7",
+   "scores": {
+    "hle": 43.1
+   }
+  },
+  {
+   "name": "GPT-5",
+   "group": "예전 참고",
+   "aa_name": "GPT-5 (high)",
+   "url": "https://artificialanalysis.ai/models/gpt-5",
+   "scores": {
+    "mmlu_pro": 87.1,
+    "gpqa": 85.4,
+    "hle": 26.5,
+    "livecodebench": 84.6,
+    "aime25": 94.3,
+    "ifbench": 73.1,
+    "mmmu_pro": 74.2
+   }
+  },
+  {
+   "name": "o3",
+   "group": "예전 참고",
+   "aa_name": "o3",
+   "url": "https://artificialanalysis.ai/models/o3",
+   "scores": {
+    "mmlu_pro": 85.3,
+    "gpqa": 82.7,
+    "hle": 20.1,
+    "livecodebench": 80.8,
+    "aime25": 88.3,
+    "ifbench": 71.4,
+    "mmmu_pro": 70.1
+   }
+  },
+  {
+   "name": "GPT-4o",
+   "group": "예전 참고",
+   "aa_name": "GPT-4o (Nov '24)",
+   "url": "https://artificialanalysis.ai/models/gpt-4o",
+   "scores": {
+    "mmlu_pro": 74.8,
+    "gpqa": 54.3,
+    "hle": 3.3,
+    "livecodebench": 30.9,
+    "aime25": 6.0,
+    "ifbench": 34.3
+   }
+  },
+  {
+   "name": "GPT-4o mini",
+   "group": "예전 참고",
+   "aa_name": "GPT-4o mini",
+   "url": "https://artificialanalysis.ai/models/gpt-4o-mini",
+   "scores": {
+    "mmlu_pro": 64.8,
+    "gpqa": 42.6,
+    "hle": 4.0,
+    "livecodebench": 23.4,
+    "aime25": 14.7,
+    "ifbench": 31.0,
+    "mmmu_pro": 41.5
+   }
+  },
+  {
+   "name": "Claude 4 Sonnet",
+   "group": "예전 참고",
+   "aa_name": "Claude 4 Sonnet (Reasoning)",
+   "url": "https://artificialanalysis.ai/models/claude-4-sonnet-thinking",
+   "scores": {
+    "mmlu_pro": 84.2,
+    "gpqa": 77.7,
+    "hle": 9.6,
+    "livecodebench": 65.5,
+    "aime25": 74.3,
+    "ifbench": 54.7,
+    "mmmu_pro": 61.8
+   }
+  },
+  {
+   "name": "Claude 3.5 Sonnet",
+   "group": "예전 참고",
+   "aa_name": "Claude 3.5 Sonnet (Oct '24)",
+   "url": "https://artificialanalysis.ai/models/claude-35-sonnet",
+   "scores": {
+    "mmlu_pro": 77.2,
+    "gpqa": 59.9,
+    "hle": 3.9,
+    "livecodebench": 38.1
+   }
+  },
+  {
+   "name": "Gemini 2.5 Pro",
+   "group": "예전 참고",
+   "aa_name": "Gemini 2.5 Pro",
+   "url": "https://artificialanalysis.ai/models/gemini-2-5-pro",
+   "scores": {
+    "mmlu_pro": 86.2,
+    "gpqa": 84.4,
+    "hle": 21.1,
+    "livecodebench": 80.1,
+    "aime25": 87.7,
+    "ifbench": 48.7,
+    "mmmu_pro": 74.9
+   }
+  },
+  {
+   "name": "Gemini 2.5 Flash",
+   "group": "예전 참고",
+   "aa_name": "Gemini 2.5 Flash (Reasoning)",
+   "url": "https://artificialanalysis.ai/models/gemini-2-5-flash-reasoning",
+   "scores": {
+    "mmlu_pro": 83.2,
+    "gpqa": 79.0,
+    "hle": 11.1,
+    "livecodebench": 69.5,
+    "aime25": 73.3,
+    "ifbench": 50.3,
+    "mmmu_pro": 69.1
+   }
+  }
+ ]
 }

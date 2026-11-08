@@ -7,7 +7,7 @@
 - 분야: 대화, 추론, 코딩, 비전, 번역, 임베딩, 음성인식(whisper), 이미지생성(SD·FLUX)
 - 모델마다 GPU 전체 / GPU+CPU 분할 / CPU / 불가와 대략적인 속도 등급, 분야별 추천 모델을 보여준다.
 - RAM·VRAM 값을 바꿔 다른 PC 사양으로도 볼 수 있다.
-- "벤치마크 비교" 탭: 모델을 최대 8개 골라 MMLU-Pro, GPQA Diamond, HLE, LiveCodeBench, AIME 2025, IFBench, MMMU-Pro 점수를 표와 막대로 비교한다(아래 "벤치마크 점수" 참고).
+- "벤치마크 비교" 탭: 모델을 최대 8개 골라 MMLU-Pro, GPQA Diamond, HLE, LiveCodeBench, AIME 2025, IFBench, MMMU-Pro 점수를 표와 막대로 비교한다. GPT·Claude·Gemini·Grok 같은 상용 모델 20개도 기준으로 함께 고를 수 있다(아래 "벤치마크 점수" 참고).
 - "최신 목록 받기"(`--update`)로 Ollama 공식 레지스트리에서 모델 크기를 새로 받고 인기 있는 새 모델을 추가한다.
 - 모델 목록·필요 사양 표: [MODELS.md](MODELS.md), 원본 데이터: [models.json](models.json)(빌드 때 exe에 포함)
 
@@ -82,7 +82,8 @@ CLI를 탐색기에서 더블클릭하면 결과를 보여주고 Enter를 기다
 - 생각(reasoning) 모드가 기본인 모델은 reasoning 점수를 쓴다(gpt-oss는 High). Ollama 기본 태그가 어느 판인지는 레지스트리 digest로 확인했다(예: `qwen3:4b` = Qwen3 4B 2507 Thinking).
 - 모델마다 측정된 벤치마크가 달라 빈 칸이 있다. 예전 모델은 MMLU-Pro·LiveCodeBench·AIME가 있고, 최근 모델은 GPQA·HLE·IFBench 위주다.
 - 점수가 없는 모델(임베딩, 음성인식, 이미지 생성, exaone3.5 등)은 비교 탭에 나오지 않는다.
-- 갱신: `python scripts/fetch_benchmarks.py` → `benchmarks.json`(빌드 때 exe에 포함). Ollama 태그 ↔ AA 모델 연결은 스크립트의 `MAPPING`에서 고친다.
+- 상용 모델: 최신 12개(Claude, GPT-6, Gemini, Grok)와 예전 참고용 8개(GPT-4o, o3, GPT-5, Claude 3.5·4 Sonnet, Gemini 2.5). 생각 수준을 고를 수 있는 모델은 가장 높은 설정 점수다. AA가 최신 상용 모델엔 HLE 등 일부 벤치마크만 공개해서 빈 칸이 많다. 처음 열면 내 PC 추천 모델 3개와 GPT-4o가 골라져 있다.
+- 갱신: `python scripts/fetch_benchmarks.py` → `benchmarks.json`(빌드 때 exe에 포함). Ollama 태그 ↔ AA 모델 연결은 스크립트의 `MAPPING`, 상용 모델 목록은 `COMMERCIAL`에서 고친다.
 
 ## GPU 감지
 
